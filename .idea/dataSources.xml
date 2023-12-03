@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="specdoc" uuid="52d78bd5-4593-45d1-863b-76a08261194b">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:file:./bd/specdoc;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE;OLD_INFORMATION_SCHEMA=TRUE</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="stepic-full" uuid="9193ff87-ef84-4dc2-bacc-018f041bf0f8">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:file:./bd/stepic-full;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE;OLD_INFORMATION_SCHEMA=TRUE</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="202a7278-50f6-4a42-b787-efaafdc2a0ed">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Users/Fezas/IdeaProjects/specdoc/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:file:./bd/specdoc;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE;OLD_INFORMATION_SCHEMA=TRUE</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

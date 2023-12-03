@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<!--
+  ~ Copyright (c) 2022
+  -->
+
+<AnchorPane prefHeight="400.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.PostOldController">
+    <children>
+        <Button fx:id="btnAddPost" layoutX="584.0" layoutY="361.0" mnemonicParsing="false" onAction="#addPost" prefHeight="25.0" prefWidth="132.0" text="Добавить" />
+        <TableView fx:id="tblPost" layoutX="8.0" layoutY="9.0" prefHeight="345.0" prefWidth="709.0">
+            <columns>
+                <TableColumn fx:id="tblClmnTitle" prefWidth="309.0" text="Наименование" />
+                <TableColumn fx:id="tblClmnTitleRP" prefWidth="272.0" text="Родительный падеж" />
+                <TableColumn fx:id="tblClmnCondNumb" prefWidth="127.0" text="Условный номер" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

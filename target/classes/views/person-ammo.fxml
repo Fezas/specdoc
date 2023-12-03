@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<!--
+  ~ Copyright (c) 2023
+  -->
+
+<AnchorPane prefHeight="160.0" prefWidth="441.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.AmmoEditController">
+   <children>
+      <ComboBox fx:id="cmbBoxWeaponType" layoutX="128.0" layoutY="12.0" prefHeight="25.0" prefWidth="294.0" />
+      <Label layoutX="20.0" layoutY="16.0" text="Модель оружия" />
+      <TextField fx:id="tfieldNumbWeapon" layoutX="128.0" layoutY="46.0" prefHeight="25.0" prefWidth="294.0" />
+      <Label layoutX="20.0" layoutY="50.0" text="Номер" />
+      <Button fx:id="btnSave" layoutX="19.0" layoutY="82.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="403.0" text="Сохранить запись" />
+      <Button fx:id="btnCancel" layoutX="303.0" layoutY="122.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="120.0" text="Закрыть" />
+      <Button fx:id="btnHelp" layoutX="181.0" layoutY="122.0" mnemonicParsing="false" onAction="#help" prefHeight="25.0" prefWidth="120.0" text="Справка" />
+   </children>
+</AnchorPane>

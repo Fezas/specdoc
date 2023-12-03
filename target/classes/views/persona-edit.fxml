@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.ToggleSwitch?>
+
+<AnchorPane prefHeight="530.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.PersonEditController">
+   <children>
+      <Button fx:id="btnCancel" cancelButton="true" layoutX="625.0" layoutY="491.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="106.0" text="Отмена" />
+      <Button fx:id="btnSave" layoutX="514.0" layoutY="491.0" mnemonicParsing="false" onAction="#saveAction" prefHeight="25.0" prefWidth="106.0" text="Сохранить" />
+      <TabPane layoutX="6.0" layoutY="14.0" prefHeight="474.0" prefWidth="717.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0">
+        <tabs>
+          <Tab text="Основные данные">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="717.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="32.0" text="Фамилия" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="650.0" AnchorPane.topAnchor="32.0" />
+                        <Label layoutX="14.0" layoutY="69.0" text="Имя" AnchorPane.leftAnchor="14.0" />
+                        <Label layoutX="14.0" layoutY="104.0" text="Отчество" AnchorPane.leftAnchor="14.0" />
+                        <Label layoutX="14.0" layoutY="215.0" text="Дата рождения" AnchorPane.leftAnchor="14.0" />
+                        <Label layoutX="326.0" layoutY="9.0" text="Родительный падеж" />
+                        <Label layoutX="14.0" layoutY="179.0" text="Личный номер" AnchorPane.leftAnchor="14.0" />
+                        <Label layoutX="14.0" layoutY="140.0" text="Пол" />
+                        <TextField fx:id="tfieldFamily" layoutX="117.0" layoutY="29.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldFamilyRP" layoutX="325.0" layoutY="29.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldFamilyDP" layoutX="515.0" layoutY="29.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldName" layoutX="117.0" layoutY="64.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldNameRP" layoutX="325.0" layoutY="65.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldNameDP" layoutX="515.0" layoutY="65.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldLastname" layoutX="117.0" layoutY="100.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldLastnameRP" layoutX="325.0" layoutY="100.0" prefHeight="25.0" prefWidth="175.0" />
+                        <TextField fx:id="tfieldLastnameDP" layoutX="515.0" layoutY="100.0" prefHeight="25.0" prefWidth="175.0" />
+                        <Button fx:id="btnAutoInput" layoutX="663.0" layoutY="134.0" mnemonicParsing="false" onAction="#autoInputPadej" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <TextField fx:id="tfieldNumberPersona" layoutX="117.0" layoutY="175.0" prefHeight="25.0" prefWidth="175.0" />
+                        <DatePicker fx:id="datePickerBirth" layoutX="118.0" layoutY="211.0" />
+                        <Separator layoutX="307.0" layoutY="13.0" orientation="VERTICAL" prefHeight="112.0" prefWidth="0.0" />
+                        <Label layoutX="516.0" layoutY="9.0" text="Дательный падеж" />
+                        <Separator layoutX="14.0" layoutY="161.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
+                        <ToggleSwitch fx:id="tglSwitchGender" layoutX="62.0" layoutY="140.0" selected="true" />
+                        <Label layoutX="118.0" layoutY="141.0" text="М" />
+                        <Label layoutX="67.0" layoutY="141.0" text="Ж" />
+                        <Label layoutX="118.0" layoutY="9.0" text="Именительный падеж" />
+                        <Separator layoutX="13.0" layoutY="242.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
+                        <Label fx:id="lbl1" disable="true" layoutX="15.0" layoutY="256.0" text="Уровень допуска к сведениям СГТ" />
+                        <Label fx:id="lblSecrecy" disable="true" layoutX="216.0" layoutY="256.0" text="Нет допуска">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnEditSecrecyPerson" layoutX="663.0" layoutY="252.0" mnemonicParsing="false" onAction="#editSecrecyPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <Label fx:id="lbl2" disable="true" layoutX="15.0" layoutY="288.0" text="Звание" />
+                        <Label fx:id="lblRank" disable="true" layoutX="216.0" layoutY="288.0" text="Нет звания">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnEditRankPerson" layoutX="663.0" layoutY="284.0" mnemonicParsing="false" onAction="#editRankPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <Label fx:id="lbl3" disable="true" layoutX="15.0" layoutY="321.0" text="Должность" />
+                        <Label fx:id="lblPosition" disable="true" layoutX="216.0" layoutY="321.0" text="Нет должности">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnEditPositionPerson" layoutX="663.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <Label fx:id="lbl4" disable="true" layoutX="15.0" layoutY="353.0" text="Допуск" />
+                        <Label fx:id="lblPost" disable="true" layoutX="216.0" layoutY="353.0" text="Нет допуска">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnEditPostPerson" layoutX="663.0" layoutY="349.0" mnemonicParsing="false" onAction="#editDopuskPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <Label fx:id="lbl5" disable="true" layoutX="15.0" layoutY="386.0" text="Оружие" />
+                        <Label fx:id="lblAmmo" disable="true" layoutX="216.0" layoutY="386.0" text="Нет оружия">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnEditAmmoPerson" layoutX="663.0" layoutY="382.0" mnemonicParsing="false" onAction="#editAmmoPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
+                        <Separator layoutX="14.0" layoutY="274.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
+                        <Separator layoutX="14.0" layoutY="306.0" prefHeight="14.0" prefWidth="676.0" />
+                        <Separator layoutX="13.0" layoutY="339.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
+                        <Separator layoutX="13.0" layoutY="372.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

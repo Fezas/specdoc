@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<!--
+  ~ Copyright (c) 2022
+  -->
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.MainController">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Файл">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="База данных">
+            <items>
+              <MenuItem fx:id="menuItemSubdivisions" mnemonicParsing="false" onAction="#viewSubdivisions" text="Штат" />
+                  <MenuItem fx:id="menuItemPosts" mnemonicParsing="false" onAction="#viewPosts" text="Боевые посты" />
+                  <MenuItem fx:id="menuItemStatePost" mnemonicParsing="false" onAction="#viewStatePost" text="Боевой расчет" />
+                  <MenuItem fx:id="menuItemPosition" mnemonicParsing="false" onAction="#viewPosition" text="Должности" />
+                  <MenuItem fx:id="menuItemPersonal" mnemonicParsing="false" onAction="#viewPersonal" text="Персонал" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Настройки">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+          <Menu fx:id="menuGraf" mnemonicParsing="false" text="Графики">
+              <items>
+              </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
