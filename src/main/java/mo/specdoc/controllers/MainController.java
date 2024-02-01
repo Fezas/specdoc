@@ -15,6 +15,8 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mo.specdoc.entity.Position;
+import mo.specdoc.model.PersonaModel;
+import mo.specdoc.util.FXMLControllerManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,7 +56,7 @@ public class MainController implements Initializable {
             stage.setResizable(false);
             stage.setScene(scene);
             PersonsViewController children = fxmlLoader.getController();
-            children.initialize(false);
+            children.setOption("allFromSelectPosition");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,30 +64,31 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void viewSubdivisions(ActionEvent event) {
+    void viewSubdivisions() {
         createScene("structure-position-table.fxml", "Штат", false);
     }
     @FXML
-    void viewPosts(ActionEvent event) {
+    void viewPosts() {
         createScene("structure-post-table.fxml", "Посты", false);
     }
     @FXML
-    void viewStatePost(ActionEvent event) {
-        createScene("state-post.fxml", "Боевой расчет", false);
+    void viewStatePost() {
+        createScene("-posts.fxml", "Боевой расчет", false);
     }
     @FXML
-    void viewPosition(ActionEvent event) {
+    void viewPosition() {
         createScene("positions.fxml", "Должности", false);
     }
     @FXML
-    void viewPersonal(ActionEvent event) {
+    void viewPersonal() {
         personal("Персонал");
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        startSimleMenu(menuGraf, "graf.fxml", "Графики");
+        FXMLControllerManager.getInstance().setMainController(this);
+        startSimleMenu(menuGraf, "input-work.fxml", "Графики");
     }
 
     /**

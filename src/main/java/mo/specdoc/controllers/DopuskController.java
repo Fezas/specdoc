@@ -7,24 +7,22 @@ package mo.specdoc.controllers;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import mo.specdoc.entity.Dopusk;
 import mo.specdoc.entity.Persona;
 import mo.specdoc.entity.Post;
-import mo.specdoc.entity.RankPerson;
 import mo.specdoc.model.DopuskModel;
 import mo.specdoc.model.PostModel;
-import mo.specdoc.model.RankPersonModel;
-import org.controlsfx.control.CheckListView;
+import mo.specdoc.util.FXMLControllerManager;
 
+import java.net.URL;
 import java.util.*;
 
-public class DopuskController {
+public class DopuskController implements Initializable {
     @FXML    private Button btnAddPost;
     @FXML    private TreeView<Post> treeViewStructurePosts;
     @FXML    private DatePicker datePickerAchievPostWork;
@@ -32,6 +30,7 @@ public class DopuskController {
     @FXML    private TableView<Dopusk> tblPosts;
     @FXML    private TableColumn<Dopusk, String> tblClmnPostsTitle;
     @FXML    private TableColumn<Dopusk, Date> tblClmnPostsDateAddPosts;
+    private Persona currentPersona;
     private static ObservableList<Dopusk> dopusks = FXCollections.observableArrayList();
     private static Map<Long, Post> mapPosts = new HashMap<Long, Post>();
     private PersonEditController personEditController;
@@ -40,25 +39,29 @@ public class DopuskController {
         this.personEditController = personEditController;
     }
 
-    private void disableLbl() {
-        if (dopusks.isEmpty()) {
-            personEditController.getLblPost().setDisable(true);
-            personEditController.getLbl4().setDisable(true);
+
+    /**
+     *Процедура проверки установки в зависимости от наличия допусков у персоны
+     * видимости Label lblPosts PersonEditController
+     */
+    private void setLabelDisableEditForm() {
+        Label label = FXMLControllerManager.getInstance().getPersonEditController().getLblPost();
+        if (!dopusks.isEmpty()) {
+            label.setDisable(false);
+            label.setText("Допущен к " + String.valueOf(dopusks.size()) + " постам");
         } else {
-            personEditController.getLblPost().setDisable(false);
-            personEditController.getLbl4().setDisable(false);
-            personEditController.getLblPost().setText("Допущен к " + String.valueOf(dopusks.size()) + " постам");
+            label.setDisable(true);
         }
     }
 
     @FXML
-    void addPost(ActionEvent event) {
+    void addPost() {
         if (!mapPosts.isEmpty()) {
             for (Map.Entry<Long, Post> entry : mapPosts.entrySet()) {
                 Dopusk dopusk = new Dopusk();
                 dopusk.setPost(entry.getValue());
                 dopusk.setNumbOrderDopusk(tfieldNumbDocsPost.getText());
-                dopusk.setPersona(personEditController.getCurrentPersona());
+                dopusk.setPersona(currentPersona);
                 dopusk.setDateDopusk(java.sql.Date.valueOf(datePickerAchievPostWork.getValue()));
                 DopuskModel.saveOrUpdate(dopusk);
                 dopusks.add(dopusk);
@@ -70,7 +73,7 @@ public class DopuskController {
     private String titlePostWithStructure(Post post, String title) {
         if (post.getIdParentPost() != null) {
             Post parent = PostModel.getById(post.getIdParentPost());
-            title = title + " > " + parent.getTitle();
+            title = title + " > " + parent.getTitleRp();
             System.out.println("222222222222         " + title);
             //post.setTitleWithStructure(post.getTitleWithStructure() + " > " + parent.getTitle());
             titlePostWithStructure(parent, title);
@@ -112,7 +115,10 @@ public class DopuskController {
         }
     }
 
-    public void initalize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        FXMLControllerManager.getInstance().setDopuskController(this);
+        currentPersona = FXMLControllerManager.getInstance().getPersonEditController().getCurrentPersona();
         datePickerAchievPostWork.valueProperty().addListener((ov, oldValue, newValue) -> {
             if (newValue != null) {
                 btnAddPost.setDisable(false);
@@ -169,10 +175,10 @@ public class DopuskController {
 
     private void initalizePosts() {//инициализация допуска к постам
         dopusks.clear();
-        for (Dopusk dopusk : DopuskModel.getByIdPersona(personEditController.getCurrentPersona().getId())) {
-            dopusk.setTitleWithStructure(titlePostWithStructure(dopusk.getPost(),dopusk.getPost().getTitle()));
+        for (Dopusk dopusk : DopuskModel.getByIdPersona(currentPersona.getId())) {
+            dopusk.setTitleWithStructure(titlePostWithStructure(dopusk.getPost(), dopusk.getPost().getTitle()));
             dopusks.add(dopusk);
         }
-        disableLbl();
+        setLabelDisableEditForm();
     }
 }

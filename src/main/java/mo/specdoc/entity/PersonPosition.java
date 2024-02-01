@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Objects;
 @Data
 @Entity
@@ -23,8 +22,8 @@ public class PersonPosition {
     private Date dateAddPosition;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_POSITION", nullable = true)
-    private Position position;
+    @JoinColumn(name = "ID_STATE", nullable = true)
+    private State state;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PERSONA", nullable = true)

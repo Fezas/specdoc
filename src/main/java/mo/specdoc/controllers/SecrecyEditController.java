@@ -10,18 +10,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import lombok.Data;
 import mo.specdoc.entity.Persona;
 import mo.specdoc.entity.SecrecyPerson;
 import mo.specdoc.entity.SecrecyType;
 import mo.specdoc.model.SecrecyPersonModel;
 import mo.specdoc.model.SecrecyTypeModel;
+import mo.specdoc.util.FXMLControllerManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-public class SecrecyEditController {
+@Data
+public class SecrecyEditController implements Initializable{
     private static ObservableList<SecrecyPerson> secrecies = FXCollections.observableArrayList();
     private SecrecyPerson secrecyPerson = new SecrecyPerson();
     private Persona currentPersona;
@@ -35,13 +37,13 @@ public class SecrecyEditController {
     @FXML    private TableColumn<SecrecyPerson, String> tblClmnDateAddSecrecy;
 
     @FXML
-    private void close(ActionEvent event) {
+    private void close() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void help(ActionEvent event) {
+    private void help() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Внимание");
         alert.setHeaderText("Невозможно сохранить");
@@ -58,8 +60,22 @@ public class SecrecyEditController {
         alert.showAndWait();
     }
 
+    /**
+     *Процедура проверки установки в зависимости от наличия допусков у персоны
+     * видимости Label lblSecrecy PersonEditController
+     */
+    private void setLabelDisableEditForm() {
+        Label label = FXMLControllerManager.getInstance().getPersonEditController().getLblSecrecy();
+        if (!secrecies.isEmpty()) {
+            label.setDisable(false);
+            label.setText(secrecies.get(secrecies.size() - 1).getSecrecyType().getTitle());
+        } else {
+            label.setDisable(true);
+        }
+    }
+
     @FXML
-    private void save(ActionEvent event) {
+    private void save() {
         if (datePickerAchievSecrecyWork.getValue() == null) {
             alert ("Не введена дата");
         } else if (cmbBoxSecrecyPersona.getSelectionModel().getSelectedItem() == null) {
@@ -70,23 +86,23 @@ public class SecrecyEditController {
             secrecyPerson.setDateAddSecrecy(java.sql.Date.valueOf(datePickerAchievSecrecyWork.getValue()));
             SecrecyPersonModel.saveOrUpdate(secrecyPerson);
             datePickerAchievSecrecyWork.setValue(null);
-            PersonEditController.getInstance().getLblSecrecy().setText(
-                    cmbBoxSecrecyPersona.getSelectionModel().getSelectedItem().getTitle()
-            );
-            PersonEditController.getInstance().getLblSecrecy().setDisable(false);
+            FXMLControllerManager.getInstance().getPersonEditController().getLblSecrecy().setDisable(false);
             secrecyPerson = new SecrecyPerson();//сбрасываем редактирование
             cmbBoxSecrecyPersona.getSelectionModel().clearSelection();
         }
         data();
     }
 
-
-    public void initialize(Persona persona) {
-        currentPersona = persona;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        FXMLControllerManager.getInstance().setSecrecyEditController(this);
+        currentPersona = FXMLControllerManager.getInstance().getPersonEditController().getCurrentPersona();
         btnSave.setGraphic(new FontIcon("anto-save"));
         btnCancel.setGraphic(new FontIcon("anto-close"));
         btnHelp.setGraphic(new FontIcon("anto-info-circle"));
+
         data();
+
         for (SecrecyType secrecyType : SecrecyTypeModel.getAllRecords()) {
             cmbBoxSecrecyPersona.getItems().add(secrecyType);
         }
@@ -94,7 +110,6 @@ public class SecrecyEditController {
         tblClmnSecrecyLevel.setCellValueFactory(new PropertyValueFactory<>("secrecyType"));
         tblClmnDateAddSecrecy.setCellValueFactory(new PropertyValueFactory<>("dateAddSecrecy"));
         tblSecrecy.setItems(secrecies);
-
         tblSecrecy.setRowFactory(
                 tableView -> {
                     //событие по двойному клику строки
@@ -123,13 +138,10 @@ public class SecrecyEditController {
                         alertDelete.setHeaderText("Удаление записи");
                         alertDelete.setContentText("Удалить запись: " + row.getItem().getSecrecyType() + "?");
                         Optional<ButtonType> option = alertDelete.showAndWait();
-                        if (option.get() == null) {
-
-                        } else if (option.get() == ButtonType.OK) {
+                        if (option.get() == ButtonType.OK) {
                             SecrecyPersonModel.delete(row.getItem());
                             tblSecrecy.getItems().remove(row.getItem());
                             data();
-                        } else if (option.get() == ButtonType.CANCEL) {
 
                         }
                     });
@@ -149,5 +161,6 @@ public class SecrecyEditController {
         for (SecrecyPerson secrecyPerson : SecrecyPersonModel.getAllSecreciesByIdPerson(currentPersona.getId())) {
             secrecies.add(secrecyPerson);
         }
+        setLabelDisableEditForm();
     }
 }

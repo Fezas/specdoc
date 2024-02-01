@@ -59,6 +59,28 @@ public class PersonaModel {
         return result;
     }
 
+    public static List<Persona> getAllWithSecrecy() {
+        Transaction transaction = null;
+        List<Persona> result = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            result = session.createQuery("SELECT a FROM Persona a", Persona.class).getResultList();
+            transaction.commit();
+            for (Persona persona : result) {
+                persona.getFamilyStringProperty().setValue(persona.getFamily());
+                persona.getNameStringProperty().setValue(persona.getNamePerson());
+                persona.getLastnameStringProperty().setValue(persona.getLastname());
+                persona.getBirthdayObjectProperty().setValue(persona.getDateBirth());
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static void saveOrUpdate(Persona persona) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

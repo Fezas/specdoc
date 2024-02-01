@@ -4,6 +4,7 @@ import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -15,20 +16,21 @@ import lombok.Data;
 import mo.specdoc.entity.*;
 import mo.specdoc.model.*;
 import mo.specdoc.util.Case;
+import mo.specdoc.util.FXMLControllerManager;
 import org.controlsfx.control.ToggleSwitch;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Data
-public class PersonEditController {
+public class PersonEditController implements Initializable {
     private Persona currentPersona;
-    private PositionController positionController;
-    private static PersonEditController singleton;
+    private PersonsViewController personsViewController;
     @FXML    private Button btnCancel, btnSave, btnAddPost, btnEditSecrecyPerson, btnEditRankPerson, btnEditPositionPerson,
             btnEditPostPerson, btnEditAmmoPerson;
-    @FXML    private Label lblSecrecy, lblRank, lblPosition, lblPost, lblAmmo, lbl1, lbl2, lbl3, lbl4, lbl5;
-    //Persona
+    @FXML    private Label lblSecrecy, lblRank, lblPosition, lblPost, lblAmmo;
     @FXML    private Button btnAutoInput;
     @FXML    private TextField tfieldFamily, tfieldFamilyDP, tfieldFamilyRP;
     @FXML    private TextField tfieldLastname, tfieldLastnameDP, tfieldLastnameRP;
@@ -37,14 +39,8 @@ public class PersonEditController {
     @FXML    private TextField tfieldNumberPersona;
     @FXML    private DatePicker datePickerBirth;
 
-    public static PersonEditController getInstance() {
-        if (singleton == null)
-            singleton = new PersonEditController();
-        return singleton;
-    }
-
-    public void setParent (PositionController positionController){
-        this.positionController = positionController;
+    public void setParent (PersonsViewController controller){
+        this.personsViewController = controller;
     }
 
     /**
@@ -69,7 +65,7 @@ public class PersonEditController {
     }
 
     @FXML
-    void cancelAction(ActionEvent event) {
+    void cancelAction() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
@@ -91,7 +87,7 @@ public class PersonEditController {
     }
 
     @FXML
-    void saveAction(ActionEvent event) {
+    void saveAction() {
         //Persona-------------------------------------------------------------------------------------------------------
         Persona person;
         if (currentPersona == null) {
@@ -100,53 +96,67 @@ public class PersonEditController {
             person = personCreate(currentPersona);
         }
         PersonaModel.saveOrUpdate(person);
-        PersonsViewController.getInstance().allPersons();
+
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();
+
+
     }
 
-    public void initialize(Persona persona) {
-        currentPersona = persona;
-        System.out.println("@@@@@@@@@@@@@@@" + currentPersona.getFamily());
+    public void loadPersona() {
+        currentPersona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona();
+        if (currentPersona.getId() != 0L) { //режим редактирования персоны
+            SecrecyPerson secrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(currentPersona.getId());
+            if (secrecyPerson != null) {
+                lblSecrecy.setText(secrecyPerson.getSecrecyType().getTitle());
+                lblSecrecy.setDisable(false);
+            }
+            RankPerson rankPerson = RankPersonModel.getLastRankByIdPerson(currentPersona.getId());
+            if (rankPerson != null) {
+                lblRank.setText(rankPerson.getRank().getTitle());
+                lblRank.setDisable(false);
+            }
+            PersonPosition personPosition = PersonPositionModel.getLastPositionByIdPerson(currentPersona.getId());
+            if (personPosition != null) {
+                lblPosition.setText(personPosition.getState().getTitleState() + " с " + personPosition.getDateAddPosition());
+                lblPosition.setDisable(false);
+            }
+            AmmoPersona ammoPersona = AmmoPersonaModel.getByIdPersona(currentPersona.getId());
+            if (ammoPersona != null) {
+                lblAmmo.setText(ammoPersona.getAmmoType().getTitle() + " №" + ammoPersona.getNumbAmmo());
+                lblAmmo.setDisable(false);
+            }
+            List<Dopusk> dopusk = DopuskModel.getByIdPersona(currentPersona.getId());
+            if (!dopusk.isEmpty()) {
+                lblPost.setText("допущен к " + dopusk.size() + " постам");
+                lblPost.setDisable(false);
+            }
+
+            //Persona---------------------------------------------------------------------------------------------------
+            tfieldFamily.setText(currentPersona.getFamily());
+            tfieldFamilyDP.setText(currentPersona.getFamilyDp());
+            tfieldFamilyRP.setText(currentPersona.getFamilyRp());
+            tfieldLastname.setText(currentPersona.getLastname());
+            tfieldLastnameDP.setText(currentPersona.getLastnameDp());
+            tfieldLastnameRP.setText(currentPersona.getLastnameRp());
+            tfieldName.setText(currentPersona.getNamePerson());
+            tfieldNameDP.setText(currentPersona.getNameDp());
+            tfieldNameRP.setText(currentPersona.getNameRp());
+            tglSwitchGender.setSelected(currentPersona.isGender());
+            tfieldNumberPersona.setText(currentPersona.getNumb());
+            datePickerBirth.setValue(currentPersona.getDateBirth().toLocalDate());
+        }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        FXMLControllerManager.getInstance().setPersonEditController(this);
+        loadPersona();
         btnEditSecrecyPerson.setGraphic(new FontIcon("anto-lock:14"));
         btnEditRankPerson.setGraphic(new FontIcon("antf-star:14"));
         btnEditPositionPerson.setGraphic(new FontIcon("anto-partition:14"));
         btnEditPostPerson.setGraphic(new FontIcon("anto-schedule:14"));
         btnEditAmmoPerson.setGraphic(new FontIcon("anto-thunderbolt:14"));
-        if (persona.getId() != 0L) {
-            SecrecyPerson secrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(persona.getId());
-            if (secrecyPerson != null) {
-                lblSecrecy.setText(secrecyPerson.getSecrecyType().getTitle());
-                lblSecrecy.setDisable(false);
-                lbl1.setDisable(false);
-            }
-            RankPerson rankPerson = RankPersonModel.getLastRankByIdPerson(persona.getId());
-            if (rankPerson != null) {
-                lblRank.setText(rankPerson.getRank().getTitle());
-                lblRank.setDisable(false);
-                lbl2.setDisable(false);
-            }
-            PersonPosition personPosition = PersonPositionModel.getLastPositionByIdPerson(persona.getId());
-            if (personPosition != null) {
-                lblPosition.setText(personPosition.getPosition().getTitle() + " с " + personPosition.getDateAddPosition());
-                lblPosition.setDisable(false);
-                lbl3.setDisable(false);
-            }
-            AmmoPersona ammoPersona = AmmoPersonaModel.getByIdPersona(persona.getId());
-            if (ammoPersona != null) {
-                lblAmmo.setText(ammoPersona.getAmmoType().getTitle() + " №" + ammoPersona.getNumbAmmo());
-                lblAmmo.setDisable(false);
-                lbl5.setDisable(false);
-            }
-            List<Dopusk> dopusk = DopuskModel.getByIdPersona(persona.getId());
-            if (!dopusk.isEmpty()) {
-                lblPost.setText("допущен к " + dopusk.size() + " постам");
-                lblPost.setDisable(false);
-                lbl4.setDisable(false);
-            }
-            //lbl3.setDisable(false);
-        }
-
         //иницилизация значений элементов управления формы
         btnAutoInput.setGraphic(new FontIcon("anto-reload:12"));
         //валидация кнопки сохранения
@@ -167,21 +177,7 @@ public class PersonEditController {
                         //.or(Bindings.isEmpty(posts))
                         //.or(datePickerAchievSecrecyWork.valueProperty().isNull())
         );
-        if (persona.getId() != 0L) { //режим редактирования персоны
-            //Persona---------------------------------------------------------------------------------------------------
-            tfieldFamily.setText(persona.getFamily());
-            tfieldFamilyDP.setText(persona.getFamilyDp());
-            tfieldFamilyRP.setText(persona.getFamilyRp());
-            tfieldLastname.setText(persona.getLastname());
-            tfieldLastnameDP.setText(persona.getLastnameDp());
-            tfieldLastnameRP.setText(persona.getLastnameRp());
-            tfieldName.setText(persona.getNamePerson());
-            tfieldNameDP.setText(persona.getNameDp());
-            tfieldNameRP.setText(persona.getNameRp());
-            tglSwitchGender.setSelected(persona.isGender());
-            tfieldNumberPersona.setText(persona.getNumb());
-            datePickerBirth.setValue(persona.getDateBirth().toLocalDate());
-        }
+
     }
 
     @FXML
@@ -191,9 +187,6 @@ public class PersonEditController {
             Stage stage = new Stage();
             stage.setTitle("Уровень допуска с СГТ");
             Scene scene = new Scene(loader.load());
-            DopuskController c = loader.getController();
-            c.setParent(this);
-            c.initalize();
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -215,8 +208,6 @@ public class PersonEditController {
             Stage stage = new Stage();
             stage.setTitle("Уровень допуска с СГТ");
             Scene scene = new Scene(loader.load());
-            SecrecyEditController c = loader.getController();
-            c.initialize(currentPersona);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -238,8 +229,6 @@ public class PersonEditController {
             Stage stage = new Stage();
             stage.setTitle("Звание");
             Scene scene = new Scene(loader.load());
-            RankEditController c = loader.getController();
-            c.initialize(currentPersona);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -261,9 +250,6 @@ public class PersonEditController {
             Stage stage = new Stage();
             stage.setTitle("Вооружение");
             Scene scene = new Scene(loader.load());
-            AmmoEditController children = loader.getController();
-            children.setParent(this);
-            children.initialize(currentPersona);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);

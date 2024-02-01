@@ -37,6 +37,10 @@ public class Rank {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<RankPerson> rankPeople;
 
+    @OneToMany(mappedBy="rank")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<State> stateDefaultRank;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

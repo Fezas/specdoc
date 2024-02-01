@@ -1,47 +1,37 @@
 package mo.specdoc.controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import mo.specdoc.entity.*;
+import mo.specdoc.entity.AmmoPersona;
+import mo.specdoc.entity.AmmoType;
+import mo.specdoc.entity.Persona;
 import mo.specdoc.model.AmmoPersonaModel;
 import mo.specdoc.model.AmmoTypeModel;
-import mo.specdoc.model.RankModel;
-import mo.specdoc.model.RankPersonModel;
+import mo.specdoc.util.FXMLControllerManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AmmoEditController {
-    private PersonEditController personEditController;
+public class AmmoEditController implements Initializable {
     private AmmoPersona ammoPersona = new AmmoPersona();
-    private Persona persona;
+    private Persona currentPersona;
     @FXML    private Button btnCancel, btnSave, btnHelp;
 
     @FXML    private ComboBox<AmmoType> cmbBoxWeaponType;
     @FXML    private TextField tfieldNumbWeapon;
 
-    public void setParent (PersonEditController personEditController){
-        this.personEditController = personEditController;
-    }
-
     @FXML
-    private void close(ActionEvent event) {
+    private void close() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void help(ActionEvent event) {
+    private void help() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Внимание");
         alert.setHeaderText("Невозможно сохранить");
@@ -58,6 +48,21 @@ public class AmmoEditController {
         alert.showAndWait();
     }
 
+    /**
+     *Процедура проверки установки в зависимости от наличия оружия у персоны
+     * видимости Label lblAmmo PersonEditController
+     */
+    private void setLabelDisableEditForm() {
+        Label label = FXMLControllerManager.getInstance().getPersonEditController().getLblAmmo();
+        if (ammoPersona.getNumbAmmo() != null) {
+            label.setDisable(false);
+            label.setText(cmbBoxWeaponType.getSelectionModel().getSelectedItem().getTitle() +
+                    " №" + tfieldNumbWeapon.getText());
+        } else {
+            label.setDisable(true);
+        }
+    }
+
     @FXML
     private void save(ActionEvent event) {
         if (tfieldNumbWeapon.getText() == "") {
@@ -65,23 +70,20 @@ public class AmmoEditController {
         } else if (cmbBoxWeaponType.getSelectionModel().getSelectedItem() == null) {
             alert ("Не выбран тип оружия");
         } else {
-            ammoPersona.setPersona(persona);
+            ammoPersona.setPersona(currentPersona);
             ammoPersona.setAmmoType(cmbBoxWeaponType.getSelectionModel().getSelectedItem());
             ammoPersona.setNumbAmmo(tfieldNumbWeapon.getText());
             AmmoPersonaModel.saveOrUpdate(ammoPersona);
-            personEditController.getLblAmmo().setDisable(false);
-            personEditController.getLbl5().setDisable(false);
-            personEditController.getLblAmmo().setText(cmbBoxWeaponType.getSelectionModel().getSelectedItem().getTitle() +
-                    " №" + tfieldNumbWeapon.getText()
-            );
+            setLabelDisableEditForm();
             cmbBoxWeaponType.getSelectionModel().clearSelection();
             tfieldNumbWeapon.setText("");
             ammoPersona = new  AmmoPersona();//сбрасываем редактирование
         }
     }
 
-    public void initialize(Persona persona) {
-        this.persona = persona;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        currentPersona = FXMLControllerManager.getInstance().getPersonEditController().getCurrentPersona();
         btnSave.setGraphic(new FontIcon("anto-save"));
         btnCancel.setGraphic(new FontIcon("anto-close"));
         btnHelp.setGraphic(new FontIcon("anto-info-circle"));

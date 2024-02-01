@@ -5,6 +5,7 @@
 package mo.specdoc.model;
 
 import mo.specdoc.entity.Position;
+import mo.specdoc.entity.Post;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -70,6 +71,23 @@ public class PositionModel {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Query<Position> query = session.createQuery("SELECT a FROM Position a WHERE a.isCard = false", Position.class);
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static List<Position> getOnlySubDivision() {
+        Transaction transaction = null;
+        List<Position> result = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Position> query = session.createQuery("SELECT a FROM Position a WHERE a.isSubdiv = true", Position.class);
             result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {

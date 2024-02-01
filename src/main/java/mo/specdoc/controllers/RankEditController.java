@@ -15,13 +15,14 @@ import mo.specdoc.entity.Rank;
 import mo.specdoc.entity.RankPerson;
 import mo.specdoc.model.RankModel;
 import mo.specdoc.model.RankPersonModel;
+import mo.specdoc.util.FXMLControllerManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class RankEditController {
+public class RankEditController implements Initializable {
     private static ObservableList<RankPerson> ranks = FXCollections.observableArrayList();
     private RankPerson rankPerson = new RankPerson();
     private Persona currentPersona;
@@ -35,13 +36,13 @@ public class RankEditController {
     @FXML    private TableColumn<RankPerson, String> tblClmnDateAddRank;
 
     @FXML
-    private void close(ActionEvent event) {
+    private void close() {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void help(ActionEvent event) {
+    private void help() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Внимание");
         alert.setHeaderText("Невозможно сохранить");
@@ -58,9 +59,22 @@ public class RankEditController {
         alert.showAndWait();
     }
 
+    /**
+     *Процедура проверки установки в зависимости от наличия званий у персоны
+     * видимости Label lblRank PersonEditController
+     */
+    private void setLabelDisableEditForm() {
+        Label label = FXMLControllerManager.getInstance().getPersonEditController().getLblRank();
+        if (!ranks.isEmpty()) {
+            label.setDisable(false);
+            label.setText(ranks.get(ranks.size() - 1).getRank().getTitle());
+        } else {
+            label.setDisable(true);
+        }
+    }
 
     @FXML
-    private void save(ActionEvent event) {
+    private void save() {
         if (datePickerAchievRank.getValue() == null) {
             alert ("Не введена дата");
         } else if (cmbBoxRankPersona.getSelectionModel().getSelectedItem() == null) {
@@ -71,28 +85,31 @@ public class RankEditController {
             rankPerson.setDateAddRank(java.sql.Date.valueOf(datePickerAchievRank.getValue()));
             RankPersonModel.saveOrUpdate(rankPerson);
             datePickerAchievRank.setValue(null);
-            PersonEditController.getInstance().getLblRank().setText(
+            FXMLControllerManager.getInstance().getPersonEditController().getLblRank().setText(
                     cmbBoxRankPersona.getSelectionModel().getSelectedItem().getTitle()
             );
             cmbBoxRankPersona.getSelectionModel().clearSelection();
-            PersonEditController.getInstance().getLblRank().setDisable(false);
+            FXMLControllerManager.getInstance().getPersonEditController().getLblRank().setDisable(false);
             rankPerson = new RankPerson();//сбрасываем редактирование
         }
         data();
     }
 
-    public void initialize(Persona persona) {
-        currentPersona = persona;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        FXMLControllerManager.getInstance().setRankEditController(this);
+        currentPersona = FXMLControllerManager.getInstance().getPersonEditController().getCurrentPersona();
         btnSave.setGraphic(new FontIcon("anto-save"));
         btnCancel.setGraphic(new FontIcon("anto-close"));
         btnHelp.setGraphic(new FontIcon("anto-info-circle"));
+
         data();
+
         for (Rank rank : RankModel.getAllRecords()) {
             cmbBoxRankPersona.getItems().add(rank);
         }
         tblClmnRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
         tblClmnDateAddRank.setCellValueFactory(new PropertyValueFactory<>("dateAddRank"));
-        data();
         tblRank.setItems(ranks);
         tblRank.setRowFactory(
                 tableView -> {
@@ -122,14 +139,10 @@ public class RankEditController {
                         alertDelete.setHeaderText("Удаление записи");
                         alertDelete.setContentText("Удалить запись: " + row.getItem().getRank() + "?");
                         Optional<ButtonType> option = alertDelete.showAndWait();
-                        if (option.get() == null) {
-
-                        } else if (option.get() == ButtonType.OK) {
+                        if (option.get() == ButtonType.OK) {
                             RankPersonModel.delete(row.getItem());
                             tblRank.getItems().remove(row.getItem());
                             data();
-                        } else if (option.get() == ButtonType.CANCEL) {
-
                         }
                     });
                     rowMenu.getItems().addAll(editItem, removeItem);
@@ -142,8 +155,9 @@ public class RankEditController {
         );
     }
 
-    private void data(){
+    private void data() {
         ranks.clear();
         ranks.addAll(RankPersonModel.getAllRanksByIdPerson(currentPersona.getId()));
+        setLabelDisableEditForm();
     }
 }

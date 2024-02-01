@@ -34,6 +34,10 @@ public class SecrecyType {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SecrecyPerson> secrecyPeople;
 
+    @OneToMany(mappedBy="secrecyType")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<State> secrecyStates;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

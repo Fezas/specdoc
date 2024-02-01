@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
@@ -25,6 +26,8 @@ import mo.specdoc.entity.Persona;
 import mo.specdoc.entity.Position;
 import mo.specdoc.model.PersonPositionModel;
 import mo.specdoc.model.PersonaModel;
+import mo.specdoc.util.FXMLControllerManager;
+import org.controlsfx.control.table.TableFilter;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
 import org.controlsfx.control.tableview2.FilteredTableView;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
@@ -33,11 +36,14 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Data
-public class PersonsViewController {
+public class PersonsViewController implements Initializable {
     private final FilteredTableColumn<Persona, String> family = new FilteredTableColumn<>("Фамилия");
     private final FilteredTableColumn<Persona, String> name = new FilteredTableColumn<>("Имя");
     private final FilteredTableColumn<Persona, String> lastname = new FilteredTableColumn<>("Отчество");
@@ -50,23 +56,17 @@ public class PersonsViewController {
     private PositionController positionController;
     private Position position;
     private Date dateAddPosition;
-    private static PersonsViewController singleton;
+    private String optionEdit;
+    public Boolean flag;
+    public Persona currentPersona;
+    private TableFilter<Persona> tableFilter;
 
     @FXML    private FilteredTableView tablePersonal;
     @FXML    private Button btnAddPersona;
 
-    public PersonsViewController() {
-        singleton = this;
-    }
 
-    public static PersonsViewController getInstance() {
-        if (singleton == null)
-            singleton = new PersonsViewController();
-        return singleton;
-    }
 
-    @FXML
-    void edit(Persona persona) {
+    void edit() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/persona-edit.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -75,25 +75,26 @@ public class PersonsViewController {
             stage.setTitle("Добавление нового служащего");
             stage.setResizable(false);
             stage.setScene(scene);
-            PersonEditController children = fxmlLoader.getController();
-            children.initialize(persona);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setParent (PositionController controller){
-        this.positionController = controller;
+    public void setOption(String option) {
+        optionEdit = option;
     }
 
-    public void initialize(Boolean flag) {
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        persons.addAll(PersonaModel.getAll());
+        FXMLControllerManager.getInstance().setPersonsViewController(this);
         btnAddPersona.setGraphic(new FontIcon("anto-user-add:14"));
         btnAddPersona.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                edit(new Persona());
+                currentPersona = new Persona();
+                edit();
             }
         });
 
@@ -105,9 +106,6 @@ public class PersonsViewController {
         lastname.setPrefWidth(110);
         birthday.setCellValueFactory(p -> p.getValue().getBirthdayObjectProperty());
         birthday.setPrefWidth(80);
-
-        if (flag) vakantPersons();
-        else allPersons();
 
         tablePersonal.getColumns().setAll(family, name, lastname, birthday);
 
@@ -123,43 +121,29 @@ public class PersonsViewController {
                 @Override
                 protected void updateItem(Object item, boolean empty) {
                     super.updateItem(item, empty);
+                    currentPersona = row.getSelectionModel().getSelectedItem();
                     if (item != null) {
                         //событие по двойному клику строки
                             row.setOnMouseClicked(event -> {
                                 if (event.getClickCount() == 2) {
-                                    if(flag) {
-                                        try {
-                                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/input-date.fxml"));
-                                            Scene scene = new Scene(fxmlLoader.load());
-                                            Stage stage = new Stage();
-                                            stage.initModality(Modality.APPLICATION_MODAL);
-                                            stage.setTitle("Введите дату назначения на должность");
-                                            stage.setResizable(false);
-                                            stage.setScene(scene);
-                                            DateInputController children = fxmlLoader.getController();
-                                            children.setPersonAndPosition(row.getSelectionModel().getSelectedItem(), position);
-                                            stage.show();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else edit(row.getSelectionModel().getSelectedItem());
+                                    edit();
                                 }
                             });
                         //контексное меню
                         final ContextMenu rowMenu = new ContextMenu();
+
                         MenuItem editItem = new MenuItem(" Редактировать");
-                        MenuItem dismissItem = new MenuItem(" Уволить");
-                        MenuItem removeItem = new MenuItem(" Удалить");
                         editItem.setGraphic(new FontIcon("anto-edit"));
-                        dismissItem.setGraphic(new FontIcon("anto-disconnect"));
-                        removeItem.setGraphic(new FontIcon("anto-delete"));
                         editItem.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                edit(row.getSelectionModel().getSelectedItem());
+                                edit();
                             }
                         });
+                        rowMenu.getItems().add(editItem);
 
+                        MenuItem removeItem = new MenuItem(" Удалить");
+                        removeItem.setGraphic(new FontIcon("anto-delete"));
                         removeItem.setOnAction(event -> {
                             Alert alertDelete = new Alert(Alert.AlertType.CONFIRMATION);
                             alertDelete.setTitle("Внимание");
@@ -172,7 +156,32 @@ public class PersonsViewController {
                                 tablePersonal.getItems().remove(row.getSelectionModel().getSelectedItem());
                             }
                         });
-                        rowMenu.getItems().addAll(editItem, removeItem, dismissItem);
+                        rowMenu.getItems().add(removeItem);
+
+                        MenuItem dismissItem = new MenuItem(" Уволить");
+                        dismissItem.setGraphic(new FontIcon("anto-disconnect"));
+                        rowMenu.getItems().add(dismissItem);
+
+                        if (optionEdit == "freeFromSelectPosition") {
+                            MenuItem addPosition = new MenuItem(" Назначить");
+                            addPosition.setGraphic(new FontIcon("anto-user-switch"));
+                            addPosition.setOnAction(event -> {
+                                try {
+                                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/input-date.fxml"));
+                                    Scene scene = new Scene(fxmlLoader.load());
+                                    Stage stage = new Stage();
+                                    stage.initModality(Modality.APPLICATION_MODAL);
+                                    stage.setTitle("Введите дату назначения на должность");
+                                    stage.setResizable(false);
+                                    stage.setScene(scene);
+                                    stage.show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+                            rowMenu.getItems().add(addPosition);
+                        }
                         row.contextMenuProperty().setValue(rowMenu);
                     }
                 }
@@ -188,6 +197,7 @@ public class PersonsViewController {
                 }
             }
         });
+        tableFilter = TableFilter.forTableView(tablePersonal).apply();
     }
 
     public void setupFilter(boolean southFilter) {
@@ -212,20 +222,6 @@ public class PersonsViewController {
     private void filterAction() {
         PopupFilter<Persona, String> popupFirstNameFilter = new PopupStringFilter<>(family);
         family.setOnFilterAction(e -> popupFirstNameFilter.showPopup());
-    }
-
-    public void allPersons() {
-        persons.clear();
-        persons.addAll(PersonaModel.getAll());
-    }
-
-    private void vakantPersons() {
-        persons.clear();
-        for (Persona persona : PersonaModel.getAll()) {
-            if (PersonPositionModel.getAllFromIdPersona(persona.getId()).isEmpty()) {
-                persons.add(persona);
-            }
-        }
     }
 
     void cancel(){

@@ -4,6 +4,7 @@
 
 package mo.specdoc.model;
 
+import mo.specdoc.entity.Position;
 import mo.specdoc.entity.State;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
@@ -46,16 +47,14 @@ public class StateModel {
         return result;
     }
 
-    public static List<State> getAllPersonsWithLastDatePositionInSubdiv(long idSubdivision) {
+    public static List<State> getFromTypeState(int id) {
         Transaction transaction = null;
         List<State> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Query<State> query = session
-                    .createQuery("SELECT a FROM State a " +
-                            "WHERE a.dateAddPosition = (SELECT max(a.dateAddPosition) FROM State) " +
-                            "AND a.idSubdivision = :id", State.class);
-            query.setParameter("id", idSubdivision);
+                    .createQuery("SELECT a FROM State a WHERE a.typeState = :id", State.class);
+            query.setParameter("id", id);
             result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {
@@ -67,34 +66,14 @@ public class StateModel {
         return result;
     }
 
-    public static State getLastPositionByPersonId(Long idPersona) {
-        Transaction transaction = null;
-        State result = new State();
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            Query<State> query = session
-                    .createQuery("SELECT a FROM State a " +
-                            "WHERE a.dateAddPosition = (SELECT max(a.dateAddPosition) FROM State) " +
-                            "AND a.idPersona = :id", State.class);
-            query.setParameter("id", idPersona);
-            result = query.getSingleResult();
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static List<State> getAllPositionByPersonId(Long idPersona) {
+    public static List<State> getChildrenPosition(long id) {
         Transaction transaction = null;
         List<State> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            result = session.createQuery("SELECT s FROM State s " +
-                    "WHERE s.idPersona = '" + idPersona + "'", State.class).getResultList();
+            Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.parentIdState =: id", State.class);
+            query.setParameter("id", id);
+            result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

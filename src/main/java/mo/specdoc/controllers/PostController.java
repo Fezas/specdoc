@@ -96,16 +96,31 @@ public class PostController implements Initializable {
     public void refresh() {
         tblStructure.getRoot().getChildren().clear();
         structure(tblStructure.getRoot());
-        //controller.refresh(); //Обновление в MainController структуры TreeView
     }
 
+    private Post createSubdivision(Position position){
+        Post subdiv = new Post();
+        subdiv.setTitle(position.getTitle());
+        subdiv.setIsCard(false);
+        subdiv.setAmplification(false);
+        subdiv.setArmed(false);
+        return subdiv;
+    }
+
+
     public void createStructure() {
-        Post postRoot = PostModel.getRootPosition();
-        Raschet root = createNode(postRoot);
+        Raschet root = createNode(createSubdivision(PositionModel.getRootPosition()));
         TreeItem<Raschet> itemRoot = new TreeItem<Raschet>(root); // корень всей структуры
         itemRoot.setExpanded(true);
         structure(itemRoot);
         tblStructure.setRoot(itemRoot);
+        for (Position position : PositionModel.getOnlySubDivision()) {
+            Raschet subdiv = createNode(createSubdivision(position));
+            TreeItem<Raschet> item = new TreeItem<Raschet>(subdiv);
+            itemRoot.getChildren().add(item);
+            List<Post> postsInCurrentSubDivision = PostModel.getByIdSubDivision(position.getId());
+            createStructureCurrendSubDiv(item);
+        }
     }
     
     /**
@@ -143,6 +158,23 @@ public class PostController implements Initializable {
             bp.getInfo().getChildren().add(label);
         }
         return bp;
+    }
+
+    /**
+     * Функция рекурсивного формирования {@link TreeTableView} с помощью запроса  {@link PositionModel#getChildrenPosition(long)}
+     */
+
+    public void createStructureCurrendSubDiv(TreeItem<Raschet> root) {
+        List<Post> posts = PostModel.getChildrenPost(root.getValue().getPost().getId()); //дочерние узлы
+        if (!posts.isEmpty()) {
+            for (Post post : posts) {
+                Raschet raschet = createNode(post);
+                TreeItem<Raschet> item = new TreeItem<Raschet>(raschet);
+                item.setExpanded(true);
+                root.getChildren().add(item);
+                structure(item);
+            }
+        }
     }
 
     /**

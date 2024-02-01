@@ -13,8 +13,8 @@
       <TreeTableView fx:id="tblStructure" layoutX="14.0" layoutY="14.0" prefHeight="378.0" prefWidth="894.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0">
         <columns>
           <TreeTableColumn fx:id="clmnTitleStructure" editable="false" minWidth="12.0" prefWidth="546.0" resizable="false" sortable="false" text="Наименование" />
-            <TreeTableColumn fx:id="clmnButtons" editable="false" minWidth="0.0" prefWidth="199.0" resizable="false" sortable="false" />
-            <TreeTableColumn fx:id="clmnInfo" editable="false" prefWidth="41.0" resizable="false" sortable="false" />
+            <TreeTableColumn fx:id="clmnButtons" editable="false" minWidth="0.0" prefWidth="240.0" resizable="false" sortable="false" />
+            <TreeTableColumn fx:id="clmnInfo" editable="false" minWidth="0.0" prefWidth="0.0" resizable="false" sortable="false" />
         </columns>
       </TreeTableView>
    </children>

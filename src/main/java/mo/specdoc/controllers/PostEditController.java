@@ -9,6 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mo.specdoc.entity.Position;
 import mo.specdoc.entity.Post;
 import mo.specdoc.entity.SecrecyType;
 import mo.specdoc.model.PostModel;
@@ -29,6 +30,7 @@ public class PostEditController implements Initializable {
     @FXML    private ToggleSwitch tglSwitchArmed;
     @FXML    private ComboBox<SecrecyType> cmbBoxSecrecyType;
     @FXML    private CheckBox chkBoxIsPost, chkBoxAmp;
+    @FXML    private ComboBox<Position> cmbBoxSubdivision;
 
     public PostEditController(Post post, long id) {
         this.post = post;

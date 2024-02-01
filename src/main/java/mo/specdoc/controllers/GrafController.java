@@ -131,7 +131,6 @@ public class GrafController implements Initializable {
                             workDay.setIdWorkType(65);
                             WorkDayModel.saveOrUpdate(workDay);
                         }
-
                     }
                 }
             }

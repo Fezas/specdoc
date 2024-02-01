@@ -48,35 +48,35 @@
                         <Label layoutX="67.0" layoutY="141.0" text="Ж" />
                         <Label layoutX="118.0" layoutY="9.0" text="Именительный падеж" />
                         <Separator layoutX="13.0" layoutY="242.0" prefHeight="14.0" prefWidth="676.0" AnchorPane.rightAnchor="28.0" />
-                        <Label fx:id="lbl1" disable="true" layoutX="15.0" layoutY="256.0" text="Уровень допуска к сведениям СГТ" />
+                        <Label layoutX="15.0" layoutY="256.0" text="Уровень допуска к сведениям СГТ" />
                         <Label fx:id="lblSecrecy" disable="true" layoutX="216.0" layoutY="256.0" text="Нет допуска">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                         <Button fx:id="btnEditSecrecyPerson" layoutX="663.0" layoutY="252.0" mnemonicParsing="false" onAction="#editSecrecyPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
-                        <Label fx:id="lbl2" disable="true" layoutX="15.0" layoutY="288.0" text="Звание" />
+                        <Label layoutX="15.0" layoutY="288.0" text="Звание" />
                         <Label fx:id="lblRank" disable="true" layoutX="216.0" layoutY="288.0" text="Нет звания">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                         <Button fx:id="btnEditRankPerson" layoutX="663.0" layoutY="284.0" mnemonicParsing="false" onAction="#editRankPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
-                        <Label fx:id="lbl3" disable="true" layoutX="15.0" layoutY="321.0" text="Должность" />
+                        <Label layoutX="15.0" layoutY="321.0" text="Должность" />
                         <Label fx:id="lblPosition" disable="true" layoutX="216.0" layoutY="321.0" text="Нет должности">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                         <Button fx:id="btnEditPositionPerson" layoutX="663.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
-                        <Label fx:id="lbl4" disable="true" layoutX="15.0" layoutY="353.0" text="Допуск" />
+                        <Label layoutX="15.0" layoutY="353.0" text="Допуск" />
                         <Label fx:id="lblPost" disable="true" layoutX="216.0" layoutY="353.0" text="Нет допуска">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                         <Button fx:id="btnEditPostPerson" layoutX="663.0" layoutY="349.0" mnemonicParsing="false" onAction="#editDopuskPerson" prefHeight="25.0" prefWidth="27.0" AnchorPane.rightAnchor="28.0" />
-                        <Label fx:id="lbl5" disable="true" layoutX="15.0" layoutY="386.0" text="Оружие" />
+                        <Label layoutX="15.0" layoutY="386.0" text="Оружие" />
                         <Label fx:id="lblAmmo" disable="true" layoutX="216.0" layoutY="386.0" text="Нет оружия">
                            <font>
                               <Font name="System Bold" size="12.0" />

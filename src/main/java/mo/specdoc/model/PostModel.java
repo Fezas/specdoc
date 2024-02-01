@@ -31,6 +31,24 @@ public class PostModel {
         return result;
     }
 
+    public static List<Post> getByIdSubDivision(long id) {
+        Transaction transaction = null;
+        List<Post> result = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Post> query = session.createQuery("SELECT a FROM Post a WHERE a.id =: id", Post.class);
+            query.setParameter("id", id);
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static Post getRootPosition() {
         Transaction transaction = null;
         Post result = null;

@@ -59,11 +59,10 @@ public class PersonPositionModel {
             transaction = session.beginTransaction();
             Query<PersonPosition> query = session
                     .createQuery("SELECT pp FROM PersonPosition pp " +
-                            "WHERE pp.dateAddPosition = (SELECT max(r.dateAddPosition) FROM PersonPosition r WHERE r.position.id = :id) " +
-                            "AND pp.position.id =:id", PersonPosition.class);
+                            "WHERE pp.dateAddPosition = (SELECT max(r.dateAddPosition) FROM PersonPosition r WHERE r.state.id = :id) " +
+                            "AND pp.state.id =:id", PersonPosition.class);
             query.setParameter("id", id);
             result = query.getResultList().stream().findFirst().orElse(null);
-
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -74,13 +73,13 @@ public class PersonPositionModel {
         return result;
     }
 
-    public static List<PersonPosition> getFromIdPosition(long idPosition) {
+    public static List<PersonPosition> getFromIdPosition(long idState) {
         Transaction transaction = null;
         List<PersonPosition> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<PersonPosition> query = session.createQuery("SELECT a FROM PersonPosition a WHERE a.position.id =: id", PersonPosition.class);
-            query.setParameter("id", idPosition);
+            Query<PersonPosition> query = session.createQuery("SELECT a FROM PersonPosition a WHERE a.state.id =: id", PersonPosition.class);
+            query.setParameter("id", idState);
             result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {
@@ -92,7 +91,25 @@ public class PersonPositionModel {
         return result;
     }
 
-
+    public static List<PersonPosition> getAllPersonsWithoutPosition(long idPersona) {
+        Transaction transaction = null;
+        List<PersonPosition> result = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<PersonPosition> query
+                    = session.createQuery("SELECT a FROM PersonPosition a WHERE a.personaFromPosition.id=: id",
+                    PersonPosition.class);
+            query.setParameter("id", idPersona);
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public static List<PersonPosition> getAllFromIdPersona(long idPersona) {
         Transaction transaction = null;
