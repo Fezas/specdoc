@@ -15,11 +15,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StatePositionEditController implements Initializable {
-    private PositionController positionController;
+    private StateController positionController;
     private State currentState;
     private long id;
     @FXML    private Button btnSave, btnCancel;
-    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus;
+    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus, tfieldSortValue;
     @FXML    private ComboBox<Rank> cmbBoxRank;
 
     public StatePositionEditController(State state, long id) {
@@ -27,7 +27,7 @@ public class StatePositionEditController implements Initializable {
         this.id = id;
     }
 
-    public void setParent (PositionController controller){
+    public void setParent (StateController controller){
         this.positionController = controller;
     }
 
@@ -39,6 +39,7 @@ public class StatePositionEditController implements Initializable {
             currentState.setTitleStateDp(tfieldTitleDP.getText());
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setPositionVus(tfVus.getText());
+            currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
             currentState.setParentIdState(id);
             currentState.setTypeState(4);
             StateModel.saveOrUpdate(currentState);
@@ -65,6 +66,7 @@ public class StatePositionEditController implements Initializable {
                 tfieldTitleRP.setText(currentState.getTitleStateRp());
                 tfieldTitleDP.setText(currentState.getTitleStateDp());
                 tfieldTitleShort.setText(currentState.getTitleStateShort());
+                tfieldSortValue.setText(String.valueOf(currentState.getSortValue()));
                 tfVus.setText(currentState.getPositionVus());
             }
         } catch (Exception e) {

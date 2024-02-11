@@ -9,7 +9,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import lombok.Data;
 import mo.specdoc.entity.Persona;
-import mo.specdoc.entity.Position;
 import mo.specdoc.entity.State;
 
 @Data
@@ -21,6 +20,7 @@ public class StateDTO {
     public CheckBox remark;
     private Persona persona;
     private State state;
+    private String sort;
     public HBox boxBtn;
     public HBox info;
 

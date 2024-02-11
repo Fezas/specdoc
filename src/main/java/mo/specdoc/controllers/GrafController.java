@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GrafController implements Initializable {
-    private ObservableList<Post> posts = FXCollections.observableArrayList();
+    private ObservableList<State> posts = FXCollections.observableArrayList();
     private Month months = new Month();
     private Integer[] years = new Integer[3];
     private int daysInMonth;
@@ -43,7 +43,7 @@ public class GrafController implements Initializable {
     @FXML    private TableView<String[]> tblGraf;
     @FXML    private ComboBox<Month> cmbBoxMonth;
     @FXML    private ComboBox<Integer> cmbBoxYear;
-    @FXML    private ComboBox<Post> cmbBoxPost;
+    @FXML    private ComboBox<State> cmbBoxPost;
     @FXML    private TabPane tabPanePosts;
     @FXML    private Button btnCreateDocDayWork;
     public GrafController() {
@@ -57,8 +57,8 @@ public class GrafController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         btnCreateDocDayWork.setGraphic(new FontIcon("ri-docs-com:18"));
         loadPosts();
-        for (Post post : posts) {
-            Tab tab = new Tab(post.getTitleShort());
+        for (State post : posts) {
+            Tab tab = new Tab(post.getTitleStateShort());
             tabPanePosts.getTabs().add(tab);
         }
         cmbBoxPost.getItems().addAll(posts);
@@ -159,14 +159,14 @@ public class GrafController implements Initializable {
     }
 
     /**
-     * Процедура загрузки постов {@link Post} и сортировка пузырьком по значению sortValue
+     * Процедура загрузки постов {@link State} и сортировка пузырьком по значению sortValue
      */
     private void loadPosts() {
-        List<Post> list = PostModel.getOnlyPost();
+        List<State> list = StateModel.getFromTypeState(6);
         for (int i = 0; i < list.size() - 1; i++) {
             for(int j = 0; j < list.size() - i - 1; j++) {
                 if(list.get(j + 1).getSortValue() < list.get(j).getSortValue()) {
-                    Post swap = list.get(j);
+                    State swap = list.get(j);
                     list.set(j, list.get(j + 1));
                     list.set(j + 1, swap);
                 }
@@ -226,7 +226,7 @@ public class GrafController implements Initializable {
     private ObservableList<String[]> buildArrayWork() {
         String lastRank;
         data.clear();
-        for (Dopusk dopusk : DopuskModel.getAllByStatePostId(cmbBoxPost.getSelectionModel().getSelectedItem().getId())){
+        for (Dopusk dopusk : DopuskModel.getAllByStatePostId(cmbBoxPost.getSelectionModel().getSelectedItem().getIdState())){
             String[] kit = new String[daysInMonth + 3];
             RankPerson rankPerson = RankPersonModel.getLastRankByIdPerson(dopusk.getPersona().getId());
             if (rankPerson == null) lastRank = "не введен";

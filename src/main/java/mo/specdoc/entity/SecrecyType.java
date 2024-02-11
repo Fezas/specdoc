@@ -26,10 +26,6 @@ public class SecrecyType {
     @Column(name = "TITLE_SHORT", nullable = false, length = 10)
     private String titleShort;
 
-    @OneToMany(mappedBy="secrecy")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Post> posts;
-
     @OneToMany(mappedBy="secrecyType")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SecrecyPerson> secrecyPeople;

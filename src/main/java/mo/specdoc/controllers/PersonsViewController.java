@@ -22,10 +22,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import lombok.Data;
-import mo.specdoc.entity.Persona;
-import mo.specdoc.entity.Position;
+import mo.specdoc.dto.PersonaDTO;
+import mo.specdoc.entity.*;
 import mo.specdoc.model.PersonPositionModel;
 import mo.specdoc.model.PersonaModel;
+import mo.specdoc.model.SecrecyPersonModel;
 import mo.specdoc.util.FXMLControllerManager;
 import org.controlsfx.control.table.TableFilter;
 import org.controlsfx.control.tableview2.FilteredTableColumn;
@@ -38,28 +39,33 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Data
 public class PersonsViewController implements Initializable {
-    private final FilteredTableColumn<Persona, String> family = new FilteredTableColumn<>("Фамилия");
-    private final FilteredTableColumn<Persona, String> name = new FilteredTableColumn<>("Имя");
-    private final FilteredTableColumn<Persona, String> lastname = new FilteredTableColumn<>("Отчество");
-    private final FilteredTableColumn<Persona, Date> birthday = new FilteredTableColumn<>("День рождения");
-    private SouthFilter<Persona, String> editorFamily;
-    private SouthFilter<Persona, String> editorName;
-    private SouthFilter<Persona, String> editorLastName;
+    private final FilteredTableColumn<PersonaDTO, String> family = new FilteredTableColumn<>("Фамилия");
+    private final FilteredTableColumn<PersonaDTO, String> name = new FilteredTableColumn<>("Имя");
+    private final FilteredTableColumn<PersonaDTO, String> lastname = new FilteredTableColumn<>("Отчество");
+    private final FilteredTableColumn<PersonaDTO, Date> birthday = new FilteredTableColumn<>("День рождения");
+    private final FilteredTableColumn<PersonaDTO, String> secrecy = new FilteredTableColumn<>("Доступ к ГТ");
+    private final FilteredTableColumn<PersonaDTO, String> rank = new FilteredTableColumn<>("Звание");
+    private final FilteredTableColumn<PersonaDTO, String> ammo = new FilteredTableColumn<>("Оружие");
+    private final FilteredTableColumn<PersonaDTO, String> state = new FilteredTableColumn<>("Должность");
+    private final FilteredTableColumn<PersonaDTO, String> dopusk = new FilteredTableColumn<>("Допуски");
+    private SouthFilter<PersonaDTO, String> editorFamily;
+    private SouthFilter<PersonaDTO, String> editorName;
+    private SouthFilter<PersonaDTO, String> editorLastName;
     private final ObservableList<Persona> persons = FXCollections.observableArrayList();
+    private final ObservableList<PersonaDTO> personsDTO = FXCollections.observableArrayList();
     private BooleanProperty southVisible = new SimpleBooleanProperty();
-    private PositionController positionController;
+    private StateController positionController;
     private Position position;
     private Date dateAddPosition;
     private String optionEdit;
     public Boolean flag;
-    public Persona currentPersona;
-    private TableFilter<Persona> tableFilter;
+    public PersonaDTO currentPersona;
+    private TableFilter<PersonaDTO> tableFilter;
 
     @FXML    private FilteredTableView tablePersonal;
     @FXML    private Button btnAddPersona;
@@ -81,19 +87,48 @@ public class PersonsViewController implements Initializable {
         }
     }
 
+
     public void setOption(String option) {
         optionEdit = option;
+        initData();
+    }
+
+    public void initData() {
+        persons.clear();
+        switch (optionEdit) {
+            case ("freePersonsFromSelectPosition") :
+                for (Persona persona : PersonaModel.getAll()) {
+                    if (PersonPositionModel.getAllFromIdPersona(persona.getId()).isEmpty()) persons.add(persona);
+                }
+                break;
+            case ("allPersons") :
+                persons.addAll(PersonaModel.getAll());
+                break;
+            case ("allPersonsWithEnableSecrecyType") :
+                State state = FXMLControllerManager.getInstance().getPositionController().getCurrentState();
+                SecrecyType secrecyType = state.getSecrecyType();
+                for (Persona persona : PersonaModel.getAll()) {
+                    SecrecyPerson lastSecrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(persona.getId());
+                    if (lastSecrecyPerson != null) {
+                        if (lastSecrecyPerson.getSecrecyType().equals(secrecyType)) persons.add(persona);
+                    }
+                }
+                break;
+        }
+        for (Persona persona : persons) {
+            PersonaDTO personaDTO = new PersonaDTO(persona);
+            personsDTO.add(personaDTO);
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        persons.addAll(PersonaModel.getAll());
         FXMLControllerManager.getInstance().setPersonsViewController(this);
         btnAddPersona.setGraphic(new FontIcon("anto-user-add:14"));
         btnAddPersona.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                currentPersona = new Persona();
+                currentPersona = new PersonaDTO();
                 edit();
             }
         });
@@ -106,23 +141,33 @@ public class PersonsViewController implements Initializable {
         lastname.setPrefWidth(110);
         birthday.setCellValueFactory(p -> p.getValue().getBirthdayObjectProperty());
         birthday.setPrefWidth(80);
-
-        tablePersonal.getColumns().setAll(family, name, lastname, birthday);
+        secrecy.setCellValueFactory(p -> p.getValue().getSecrecyStringProperty());
+        secrecy.setPrefWidth(80);
+        rank.setCellValueFactory(p -> p.getValue().getRankStringProperty());
+        rank.setPrefWidth(60);
+        ammo.setCellValueFactory(p -> p.getValue().getAmmoStringProperty());
+        ammo.setPrefWidth(50);
+        state.setCellValueFactory(p -> p.getValue().getStateStringProperty());
+        state.setPrefWidth(80);
+        dopusk.setCellValueFactory(p -> p.getValue().getDopuskStringProperty());
+        dopusk.setPrefWidth(80);
+        tablePersonal.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tablePersonal.getColumns().setAll(family, name, lastname, birthday, secrecy, rank, ammo, state, dopusk);
 
         tablePersonal.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tablePersonal.rowHeaderVisibleProperty().set(true);
         tablePersonal.tableMenuButtonVisibleProperty().set(true);
-        tablePersonal.setItems(persons);
+        tablePersonal.setItems(personsDTO);
         editorFamily = new SouthFilter<>(family, String.class);
         filterAction();
 
-        Callback<TableView<Persona>, TableRow<Persona>> rowFactory = row -> {
+        Callback<TableView<PersonaDTO>, TableRow<PersonaDTO>> rowFactory = row -> {
             return new TableRow2(tablePersonal) {
                 @Override
                 protected void updateItem(Object item, boolean empty) {
                     super.updateItem(item, empty);
-                    currentPersona = row.getSelectionModel().getSelectedItem();
                     if (item != null) {
+                        currentPersona = row.getSelectionModel().getSelectedItem();
                         //событие по двойному клику строки
                             row.setOnMouseClicked(event -> {
                                 if (event.getClickCount() == 2) {
@@ -131,7 +176,6 @@ public class PersonsViewController implements Initializable {
                             });
                         //контексное меню
                         final ContextMenu rowMenu = new ContextMenu();
-
                         MenuItem editItem = new MenuItem(" Редактировать");
                         editItem.setGraphic(new FontIcon("anto-edit"));
                         editItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -152,7 +196,7 @@ public class PersonsViewController implements Initializable {
                             Optional<ButtonType> option = alertDelete.showAndWait();
                             if (option.get() == null) {
                             } else if (option.get() == ButtonType.OK) {
-                                PersonaModel.delete(row.getSelectionModel().getSelectedItem());
+                                PersonaModel.delete(row.getSelectionModel().getSelectedItem().getPersona());
                                 tablePersonal.getItems().remove(row.getSelectionModel().getSelectedItem());
                             }
                         });
@@ -162,7 +206,7 @@ public class PersonsViewController implements Initializable {
                         dismissItem.setGraphic(new FontIcon("anto-disconnect"));
                         rowMenu.getItems().add(dismissItem);
 
-                        if (optionEdit == "freeFromSelectPosition") {
+                        if (optionEdit == "freePersonsFromSelectPosition") {
                             MenuItem addPosition = new MenuItem(" Назначить");
                             addPosition.setGraphic(new FontIcon("anto-user-switch"));
                             addPosition.setOnAction(event -> {
@@ -220,9 +264,11 @@ public class PersonsViewController implements Initializable {
     }
 
     private void filterAction() {
-        PopupFilter<Persona, String> popupFirstNameFilter = new PopupStringFilter<>(family);
+        PopupFilter<PersonaDTO, String> popupFirstNameFilter = new PopupStringFilter<>(family);
         family.setOnFilterAction(e -> popupFirstNameFilter.showPopup());
     }
+
+
 
     void cancel(){
         Stage stage = (Stage) tablePersonal.getScene().getWindow();

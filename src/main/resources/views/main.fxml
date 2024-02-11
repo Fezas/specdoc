@@ -3,13 +3,16 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 <!--
   ~ Copyright (c) 2022
   -->
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.MainController">
    <children>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
         <menus>
@@ -38,5 +41,14 @@
           </Menu>
         </menus>
       </MenuBar>
+      <Pane layoutY="27.0" prefHeight="573.0" prefWidth="800.0">
+         <children>
+            <ImageView fitHeight="247.0" fitWidth="200.0" layoutX="292.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/emblem.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

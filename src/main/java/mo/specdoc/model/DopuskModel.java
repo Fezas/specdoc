@@ -5,8 +5,6 @@
 package mo.specdoc.model;
 
 import mo.specdoc.entity.Dopusk;
-import mo.specdoc.entity.Post;
-import mo.specdoc.entity.SecrecyPerson;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

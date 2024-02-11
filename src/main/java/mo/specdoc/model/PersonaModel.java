@@ -4,19 +4,12 @@
 
 package mo.specdoc.model;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
-import mo.specdoc.entity.PersonPosition;
 import mo.specdoc.entity.Persona;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,34 +37,6 @@ public class PersonaModel {
             transaction = session.beginTransaction();
             result = session.createQuery("SELECT a FROM Persona a", Persona.class).getResultList();
             transaction.commit();
-            for (Persona persona : result) {
-                persona.getFamilyStringProperty().setValue(persona.getFamily());
-                persona.getNameStringProperty().setValue(persona.getNamePerson());
-                persona.getLastnameStringProperty().setValue(persona.getLastname());
-                persona.getBirthdayObjectProperty().setValue(persona.getDateBirth());
-            }
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static List<Persona> getAllWithSecrecy() {
-        Transaction transaction = null;
-        List<Persona> result = new ArrayList<>();
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            result = session.createQuery("SELECT a FROM Persona a", Persona.class).getResultList();
-            transaction.commit();
-            for (Persona persona : result) {
-                persona.getFamilyStringProperty().setValue(persona.getFamily());
-                persona.getNameStringProperty().setValue(persona.getNamePerson());
-                persona.getLastnameStringProperty().setValue(persona.getLastname());
-                persona.getBirthdayObjectProperty().setValue(persona.getDateBirth());
-            }
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

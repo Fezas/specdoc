@@ -8,14 +8,17 @@
   ~ Copyright (c) 2022-2023. Stepantsov P.V.
   -->
 
-<AnchorPane prefHeight="502.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.PositionController">
+<AnchorPane prefHeight="502.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.PositionController">
    <children>
-      <TreeTableView fx:id="tblStructure" layoutX="14.0" layoutY="14.0" prefHeight="378.0" prefWidth="894.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0">
+      <TreeTableView fx:id="tblStructure" layoutX="14.0" layoutY="14.0" prefHeight="900.0" prefWidth="900.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="8.0">
         <columns>
-          <TreeTableColumn fx:id="clmnTitleStructure" editable="false" minWidth="12.0" prefWidth="546.0" resizable="false" sortable="false" text="Наименование" />
-            <TreeTableColumn fx:id="clmnButtons" editable="false" minWidth="0.0" prefWidth="240.0" resizable="false" sortable="false" />
-            <TreeTableColumn fx:id="clmnInfo" editable="false" minWidth="0.0" prefWidth="0.0" resizable="false" sortable="false" />
+          <TreeTableColumn fx:id="clmnTitleStructure" editable="false" maxWidth="459.0" minWidth="-Infinity" prefWidth="459.0" sortable="false" text="Наименование" />
+            <TreeTableColumn fx:id="clmnSort" maxWidth="60.0" minWidth="0.0" prefWidth="0.0" text="Сорт" />
+            <TreeTableColumn fx:id="clmnButtons" editable="false" maxWidth="369.0" minWidth="-Infinity" prefWidth="369.0" resizable="false" sortable="false" />
         </columns>
+         <columnResizePolicy>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TreeTableView>
    </children>
 </AnchorPane>

@@ -34,7 +34,7 @@ public class DateInputController {
         btnCancel.setGraphic(new FontIcon("anto-close"));
         PersonPosition personPosition = new PersonPosition();
         State state = FXMLControllerManager.getInstance().getPositionController().getCurrentState();
-        Persona persona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona();
+        Persona persona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona().getPersona();
         personPosition.setState(state);
         personPosition.setPersonaFromPosition(persona);
         personPosition.setDateAddPosition(java.sql.Date.valueOf(dp.getValue()));

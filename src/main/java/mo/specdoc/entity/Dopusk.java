@@ -32,8 +32,8 @@ public class Dopusk {
     private Persona persona;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_STATE_POST", nullable = true)
-    private Post post;
+    @JoinColumn(name = "ID_STATE", nullable = true)
+    private State state;
 
     @Transient
     private String titleWithStructure;

@@ -4,8 +4,6 @@
 
 package mo.specdoc.model;
 
-import mo.specdoc.entity.Position;
-import mo.specdoc.entity.Post;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

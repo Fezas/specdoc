@@ -12,18 +12,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StateRootEditController implements Initializable {
-    private PositionController positionController;
+    private StateController positionController;
     private State currentState;
     private long id;
     @FXML    private Button btnSave, btnCancel;
-    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus, tfAddress;
+    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus,
+            tfAddress, tfieldSortValue;
 
     public StateRootEditController(State state, long id) {
         this.currentState = state;
         this.id = id;
     }
 
-    public void setParent (PositionController controller){
+    public void setParent (StateController controller){
         this.positionController = controller;
     }
 
@@ -36,6 +37,7 @@ public class StateRootEditController implements Initializable {
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setParentIdState(id);
             currentState.setSubdivisionAddress(tfAddress.getText());
+            currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
             currentState.setTypeState(2);
             StateModel.saveOrUpdate(currentState);
             positionController.refresh();
@@ -60,6 +62,7 @@ public class StateRootEditController implements Initializable {
                 tfieldTitleRP.setText(currentState.getTitleStateRp());
                 tfieldTitleDP.setText(currentState.getTitleStateDp());
                 tfieldTitleShort.setText(currentState.getTitleStateShort());
+                tfieldSortValue.setText(String.valueOf(currentState.getSortValue()));
                 tfAddress.setText(currentState.getSubdivisionAddress());
             }
         } catch (Exception e) {

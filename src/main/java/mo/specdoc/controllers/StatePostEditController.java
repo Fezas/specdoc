@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StatePostEditController implements Initializable {
-    private PositionController positionController;
+    private StateController positionController;
     private State currentState;
     private long id;
     @FXML    private Button btnSave, btnCancel;
@@ -32,7 +32,7 @@ public class StatePostEditController implements Initializable {
         this.id = id;
     }
 
-    public void setParent (PositionController controller){
+    public void setParent (StateController controller){
         this.positionController = controller;
     }
 

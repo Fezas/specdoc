@@ -96,7 +96,7 @@ public class PersonEditController implements Initializable {
             person = personCreate(currentPersona);
         }
         PersonaModel.saveOrUpdate(person);
-
+        FXMLControllerManager.getInstance().getPersonsViewController().initData();//обновляем данные в таблице
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();
 
@@ -104,7 +104,7 @@ public class PersonEditController implements Initializable {
     }
 
     public void loadPersona() {
-        currentPersona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona();
+        currentPersona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona().getPersona();
         if (currentPersona.getId() != 0L) { //режим редактирования персоны
             SecrecyPerson secrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(currentPersona.getId());
             if (secrecyPerson != null) {

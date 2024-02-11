@@ -22,7 +22,6 @@
     <mapping class="mo.specdoc.entity.Dopusk"/>
     <mapping class="mo.specdoc.entity.Persona"/>
     <mapping class="mo.specdoc.entity.Position"/>
-    <mapping class="mo.specdoc.entity.Post"/>
     <mapping class="mo.specdoc.entity.Rank"/>
     <mapping class="mo.specdoc.entity.RankPerson"/>
     <mapping class="mo.specdoc.entity.SecrecyPerson"/>

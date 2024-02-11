@@ -22,7 +22,7 @@ public class FXMLControllerManager {
     private SecrecyEditController secrecyEditController;
     private MainController mainController;
     private PersonsViewController personsViewController;
-    private PositionController positionController;
+    private StateController positionController;
     private RankEditController rankEditController;
     private DopuskController dopuskController;
 

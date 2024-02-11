@@ -4,7 +4,6 @@
 
 package mo.specdoc.model;
 
-import mo.specdoc.entity.Position;
 import mo.specdoc.entity.State;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;

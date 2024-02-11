@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <!--
   ~ Copyright (c) 2023
   -->
 
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.DopuskController">
    <children>
-      <Label layoutX="24.0" layoutY="16.0" text="Посты" AnchorPane.leftAnchor="10.0" />
-      <TreeView fx:id="treeViewStructurePosts" layoutX="26.0" layoutY="33.0" prefHeight="251.0" prefWidth="468.0" AnchorPane.leftAnchor="10.0" />
-      <Label layoutX="505.0" layoutY="36.0" text="№ приказа" />
-      <Label layoutX="505.0" layoutY="70.0" text="Дата назначения" />
-      <TextField fx:id="tfieldNumbDocsPost" layoutX="616.0" layoutY="32.0" prefHeight="25.0" prefWidth="174.0" AnchorPane.rightAnchor="10.0" />
-      <DatePicker fx:id="datePickerAchievPostWork" layoutX="616.0" layoutY="66.0" AnchorPane.rightAnchor="10.0" />
-      <Button fx:id="btnAddPost" disable="true" layoutX="10.0" layoutY="293.0" mnemonicParsing="false" onAction="#addPost" prefHeight="25.0" prefWidth="468.0" text="Добавить выбранные записи в допуск" AnchorPane.leftAnchor="10.0" />
-      <TableView fx:id="tblPosts" layoutX="26.0" layoutY="324.0" prefHeight="261.0" prefWidth="780.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-         <columns>
-            <TableColumn fx:id="tblClmnPostsTitle" prefWidth="639.0" text="Пост" />
-            <TableColumn fx:id="tblClmnPostsDateAddPosts" prefWidth="139.0" text="Дата допуска" />
-         </columns>
-      </TableView>
+      <TabPane layoutX="10.0" layoutY="8.0" prefHeight="586.0" prefWidth="780.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Посты">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="14.0" layoutY="444.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="365.0" text="Button" />
+                        <TabPane fx:id="tabPanePosts" layoutX="14.0" layoutY="14.0" prefHeight="403.0" prefWidth="750.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Untitled Tab 1">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="341.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
+          <Tab fx:id="tabPanePostsHistory" text="История назначений" />
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

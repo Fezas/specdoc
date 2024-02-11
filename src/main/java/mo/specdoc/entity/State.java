@@ -87,4 +87,9 @@ public class State {
     public int hashCode() {
         return Objects.hash(idState, typeState, parentIdState, titleState, titleStateShort, titleStateRp, titleStateDp, titleStatePp, postArmed, postNumb, postIsAmplification, positionVus, subdivisionAddress, subdivisionCondNumber, sortValue);
     }
+
+    @Override
+    public String toString() {
+        return titleState;
+    }
 }

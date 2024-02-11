@@ -12,18 +12,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StateSubdivEditController implements Initializable {
-    private PositionController positionController;
+    private StateController positionController;
     private State currentState;
     private long id;
     @FXML    private Button btnSave, btnCancel;
-    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus;
+    @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfieldSortValue;
 
     public StateSubdivEditController(State state, long id) {
         this.currentState = state;
         this.id = id;
     }
 
-    public void setParent (PositionController controller){
+    public void setParent (StateController controller){
         this.positionController = controller;
     }
 
@@ -34,6 +34,7 @@ public class StateSubdivEditController implements Initializable {
             currentState.setTitleStateRp(tfieldTitleRP.getText());
             currentState.setTitleStateDp(tfieldTitleDP.getText());
             currentState.setTitleStateShort(tfieldTitleShort.getText());
+            currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
             currentState.setParentIdState(id);
             currentState.setTypeState(3);
             StateModel.saveOrUpdate(currentState);
@@ -59,6 +60,7 @@ public class StateSubdivEditController implements Initializable {
                 tfieldTitleRP.setText(currentState.getTitleStateRp());
                 tfieldTitleDP.setText(currentState.getTitleStateDp());
                 tfieldTitleShort.setText(currentState.getTitleStateShort());
+                tfieldSortValue.setText(String.valueOf(currentState.getSortValue()));
             }
         } catch (Exception e) {
             e.printStackTrace();

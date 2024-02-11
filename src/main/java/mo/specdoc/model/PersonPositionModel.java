@@ -91,7 +91,7 @@ public class PersonPositionModel {
         return result;
     }
 
-    public static List<PersonPosition> getAllPersonsWithoutPosition(long idPersona) {
+    public static List<PersonPosition> getAllPosition() {
         Transaction transaction = null;
         List<PersonPosition> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -99,7 +99,7 @@ public class PersonPositionModel {
             Query<PersonPosition> query
                     = session.createQuery("SELECT a FROM PersonPosition a WHERE a.personaFromPosition.id=: id",
                     PersonPosition.class);
-            query.setParameter("id", idPersona);
+            query.setParameter("id", 4);
             result = query.getResultList();
             transaction.commit();
         } catch (Exception e) {

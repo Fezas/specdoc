@@ -83,14 +83,6 @@ public class Persona {
 
 
     @Transient
-    private String fio;
-    @Transient
-    private StringProperty familyStringProperty= new SimpleStringProperty();
-    @Transient
-    private StringProperty nameStringProperty = new SimpleStringProperty();
-    @Transient
-    private StringProperty lastnameStringProperty = new SimpleStringProperty();
-    @Transient
     private final ObjectProperty<HBox> control = new SimpleObjectProperty<>();
     @Transient
     private final ObjectProperty<Date> birthdayObjectProperty = new SimpleObjectProperty<>();

@@ -14,8 +14,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import mo.specdoc.entity.Position;
-import mo.specdoc.model.PersonaModel;
 import mo.specdoc.util.FXMLControllerManager;
 
 import java.io.IOException;
@@ -53,10 +51,10 @@ public class MainController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle(title);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setScene(scene);
             PersonsViewController children = fxmlLoader.getController();
-            children.setOption("allFromSelectPosition");
+            children.setOption("allPersons");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,11 +63,11 @@ public class MainController implements Initializable {
 
     @FXML
     void viewSubdivisions() {
-        createScene("structure-position-table.fxml", "Штат", false);
+        createScene("structure-position-table.fxml", "Штат", true);
     }
     @FXML
     void viewPosts() {
-        createScene("structure-post-table.fxml", "Посты", false);
+        createScene("-structure-post-table.fxml", "Посты", false);
     }
     @FXML
     void viewStatePost() {
