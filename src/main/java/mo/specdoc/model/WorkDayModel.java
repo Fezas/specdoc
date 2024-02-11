@@ -4,7 +4,6 @@
 
 package mo.specdoc.model;
 
-import mo.specdoc.entity.Dopusk;
 import mo.specdoc.entity.WorkDay;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;

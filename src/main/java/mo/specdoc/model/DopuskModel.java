@@ -4,7 +4,7 @@
 
 package mo.specdoc.model;
 
-import mo.specdoc.entity.Dopusk;
+import mo.specdoc.entity.dopusk.Dopusk;
 import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

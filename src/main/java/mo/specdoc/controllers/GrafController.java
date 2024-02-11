@@ -5,21 +5,14 @@
 package mo.specdoc.controllers;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
-import lombok.SneakyThrows;
 import mo.specdoc.entity.*;
+import mo.specdoc.entity.dopusk.Dopusk;
 import mo.specdoc.model.*;
 import mo.specdoc.util.Month;
 import org.kordamp.ikonli.javafx.FontIcon;

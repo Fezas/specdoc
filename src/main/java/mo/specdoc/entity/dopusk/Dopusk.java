@@ -1,31 +1,24 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  */
 
-package mo.specdoc.entity;
+package mo.specdoc.entity.dopusk;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import mo.specdoc.entity.Persona;
+import mo.specdoc.entity.State;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Objects;
 @Data
 @Entity
+@Table(name = "DOPUSK", schema = "PUBLIC", catalog = "SPECDOC")
 public class Dopusk {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private long id;
-    @Basic
-    @Column(name = "DATE_DOPUSK", nullable = true)
-    private Date dateDopusk;
-    @Basic
-    @Column(name = "NUMB_ORDER_DOPUSK", nullable = true, length = -1)
-    private String numbOrderDopusk;
-    @Basic
-    @Column(name = "ACTIVE", nullable = false)
-    private boolean active;
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name="ID_PERSONA")
@@ -35,6 +28,10 @@ public class Dopusk {
     @JoinColumn(name = "ID_STATE", nullable = true)
     private State state;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_DOC_DOPUSK", nullable = true)
+    private DocDopusk docDopusk;
+
     @Transient
     private String titleWithStructure;
 
@@ -43,11 +40,11 @@ public class Dopusk {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dopusk dopusk = (Dopusk) o;
-        return id == dopusk.id &&  active == dopusk.active && Objects.equals(dateDopusk, dopusk.dateDopusk) && Objects.equals(numbOrderDopusk, dopusk.numbOrderDopusk);
+        return id == dopusk.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateDopusk, numbOrderDopusk, active);
+        return Objects.hash(id);
     }
 }

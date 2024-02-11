@@ -19,7 +19,7 @@
     <property name="hibernate.connection.password">23806406</property>
     <mapping class="mo.specdoc.entity.AmmoPersona"/>
     <mapping class="mo.specdoc.entity.AmmoType"/>
-    <mapping class="mo.specdoc.entity.Dopusk"/>
+    <mapping class="mo.specdoc.entity.dopusk.Dopusk"/>
     <mapping class="mo.specdoc.entity.Persona"/>
     <mapping class="mo.specdoc.entity.Rank"/>
     <mapping class="mo.specdoc.entity.RankPerson"/>
@@ -31,6 +31,9 @@
     <mapping class="mo.specdoc.entity.WorkType"/>
     <mapping class="mo.specdoc.entity.PersonPosition"/>
     <mapping class="mo.specdoc.entity.RootPosition"/>
+    <!-- ДОПОЛНЕНИЯ -->
+    <mapping class="mo.specdoc.entity.dopusk.DocDopusk"/>
+
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>

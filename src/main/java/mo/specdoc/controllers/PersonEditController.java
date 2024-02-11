@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Data;
 import mo.specdoc.entity.*;
+import mo.specdoc.entity.dopusk.Dopusk;
 import mo.specdoc.model.*;
 import mo.specdoc.util.Case;
 import mo.specdoc.util.FXMLControllerManager;

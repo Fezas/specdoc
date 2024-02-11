@@ -4,12 +4,12 @@
 
 package mo.specdoc.dto;
 
-import jakarta.persistence.Transient;
 import javafx.beans.property.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import lombok.Data;
 import mo.specdoc.entity.*;
+import mo.specdoc.entity.dopusk.Dopusk;
 import mo.specdoc.model.*;
 
 import java.sql.Date;
