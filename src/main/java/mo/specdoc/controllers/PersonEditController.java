@@ -23,6 +23,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Data
@@ -91,11 +92,7 @@ public class PersonEditController implements Initializable {
     void saveAction() {
         //Persona-------------------------------------------------------------------------------------------------------
         Persona person;
-        if (currentPersona == null) {
-            person = new Persona();
-        } else {
-            person = personCreate(currentPersona);
-        }
+        person = personCreate(Objects.requireNonNullElseGet(currentPersona, Persona::new));
         PersonaModel.saveOrUpdate(person);
         FXMLControllerManager.getInstance().getPersonsViewController().initData();//обновляем данные в таблице
         Stage stage = (Stage) btnSave.getScene().getWindow();
@@ -106,7 +103,7 @@ public class PersonEditController implements Initializable {
 
     public void loadPersona() {
         currentPersona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona().getPersona();
-        if (currentPersona.getId() != 0L) { //режим редактирования персоны
+        if (currentPersona != null) { //режим редактирования персоны
             SecrecyPerson secrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(currentPersona.getId());
             if (secrecyPerson != null) {
                 lblSecrecy.setText(secrecyPerson.getSecrecyType().getTitle());

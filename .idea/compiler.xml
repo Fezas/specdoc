@@ -10,8 +10,5 @@
         <module name="specdoc" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="specdoc" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

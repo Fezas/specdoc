@@ -96,20 +96,6 @@ public class StateController implements Initializable {
      * Процедура загрузки узлов штата {@link State и сортировка пузырьком по значению sortValue
      * @param List<State> data
      */
-    private List<State> sortedListState(List<State> data) {
-        List<State> result = new ArrayList<>();
-        for (int i = 0; i < data.size() - 1; i++) {
-            for(int j = 0; j < data.size() - i - 1; j++) {
-                if(data.get(j + 1).getSortValue() < data.get(j).getSortValue()) {
-                    State swap = data.get(j);
-                    data.set(j, data.get(j + 1));
-                    data.set(j + 1, swap);
-                }
-            }
-        }
-        return data;
-    }
-
 
     public void createStructure() {
         State stateRoot = StateModel.getFromTypeState(1).get(0);
@@ -192,7 +178,7 @@ public class StateController implements Initializable {
     public void structure(TreeItem<StateDTO> itemRoot) {
         List<State> data = StateModel.getChildrenPosition(itemRoot.getValue().getState().getIdState()); //дочерние узлы
         if (!data.isEmpty()) {
-            for (State state : sortedListState(data)) {
+            for (State state : data) {
                 TreeItem<StateDTO> item = createNode(state);
                 itemRoot.getChildren().add(item);
                 structure(item);
@@ -320,7 +306,7 @@ public class StateController implements Initializable {
         Button button = new Button();
         button.setGraphic(new FontIcon("anto-delete"));
         Tooltip tooltip = new Tooltip();
-        tooltip.setText("Редактировать \n\"" + stateDTO.getState().getTitleState() + "\"\n");
+        tooltip.setText("Удалить \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {

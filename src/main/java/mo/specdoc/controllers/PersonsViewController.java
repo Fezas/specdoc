@@ -36,6 +36,7 @@ import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import javax.swing.text.Position;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -95,6 +96,7 @@ public class PersonsViewController implements Initializable {
 
     public void initData() {
         persons.clear();
+        personsDTO.clear();
         switch (optionEdit) {
             case ("freePersonsFromSelectPosition") :
                 for (Persona persona : PersonaModel.getAll()) {
@@ -153,7 +155,6 @@ public class PersonsViewController implements Initializable {
         dopusk.setPrefWidth(80);
         tablePersonal.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tablePersonal.getColumns().setAll(family, name, lastname, birthday, secrecy, rank, ammo, state, dopusk);
-
         tablePersonal.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tablePersonal.rowHeaderVisibleProperty().set(true);
         tablePersonal.tableMenuButtonVisibleProperty().set(true);

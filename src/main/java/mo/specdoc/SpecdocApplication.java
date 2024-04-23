@@ -3,11 +3,7 @@ package mo.specdoc;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import mo.specdoc.controllers.PersonEditController;
-import mo.specdoc.entity.Persona;
-import mo.specdoc.model.PositionModel;
 
 import java.io.IOException;
 

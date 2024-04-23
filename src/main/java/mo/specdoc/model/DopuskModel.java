@@ -70,7 +70,7 @@ public class DopuskModel {
         List<Dopusk> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Dopusk> query = session.createQuery("SELECT a FROM Dopusk a WHERE a.post.id =: id", Dopusk.class);
+            Query<Dopusk> query = session.createQuery("SELECT a FROM Dopusk a WHERE a.state.id =: id", Dopusk.class);
             query.setParameter("id", id);
             result = query.getResultList();
             transaction.commit();

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GrafController implements Initializable {
+    public TabPane tabPaneSubdivions;
     private ObservableList<State> posts = FXCollections.observableArrayList();
     private Month months = new Month();
     private Integer[] years = new Integer[3];

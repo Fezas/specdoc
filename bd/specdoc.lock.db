@@ -1,6 +1,6 @@
 #FileLock
-#Sun Feb 11 01:23:07 UTC 2024
-server=192.168.3.55\:50103
-hostName=DESKTOP-DU2B38M
+#Mon Apr 22 22:20:59 SAKT 2024
+server=localhost\:50396
+hostName=localhost
 method=file
-id=18d95c2bf712d6b7de48378f4929a1ce4cb683e906b
+id=18f0589a14eea6aea8dfd6c860e2c7ae95232579900

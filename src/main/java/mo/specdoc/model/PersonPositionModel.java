@@ -51,6 +51,25 @@ public class PersonPositionModel {
         }
         return result;
     }
+    //добавить дату освобождения с должности
+    public static List<PersonPosition> getAllActualPersons() {
+        Transaction transaction = null;
+        List<PersonPosition> result = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<PersonPosition> query = session
+                    .createQuery("SELECT pp FROM PersonPosition pp " +
+                            "WHERE pp.dateRemovePosition is null", PersonPosition.class);
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public static PersonPosition getActualPersonsFromPositionId(Long id) {
         Transaction transaction = null;

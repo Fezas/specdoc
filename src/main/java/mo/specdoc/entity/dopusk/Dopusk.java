@@ -19,6 +19,12 @@ public class Dopusk {
     @Id
     @Column(name = "ID", nullable = false)
     private long id;
+    @Basic
+    @Column(name = "DATE_START", nullable = true)
+    private Date dateStart;
+    @Basic
+    @Column(name = "DATE_END", nullable = true)
+    private Date dateEnd;
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name="ID_PERSONA")

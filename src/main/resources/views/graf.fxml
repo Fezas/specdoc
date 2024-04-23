@@ -17,6 +17,6 @@
       <ComboBox fx:id="cmbBoxMonth" layoutX="28.0" layoutY="27.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0" />
       <ComboBox fx:id="cmbBoxPost" layoutX="356.0" layoutY="27.0" prefHeight="25.0" prefWidth="345.0" />
       <Button fx:id="btnCreateDocDayWork" layoutX="881.0" layoutY="27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Создать суточный приказ" />
-      <TabPane fx:id="tabPanePosts" layoutX="14.0" layoutY="71.0" prefHeight="413.0" prefWidth="1293.0" tabClosingPolicy="UNAVAILABLE" />
+      <TabPane fx:id="tabPaneSubdivions" layoutX="14.0" layoutY="71.0" prefHeight="413.0" prefWidth="1293.0" tabClosingPolicy="UNAVAILABLE" />
    </children>
 </AnchorPane>

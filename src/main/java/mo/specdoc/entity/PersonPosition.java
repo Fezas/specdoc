@@ -20,6 +20,12 @@ public class PersonPosition {
     @Basic
     @Column(name = "DATE_ADD_POSITION", nullable = true)
     private Date dateAddPosition;
+    @Basic
+    @Column(name = "DATE_REMOVE_POSITION", nullable = true)
+    private Date dateRemovePosition;
+    @Basic
+    @Column(name = "DATE_CANCEL", nullable = true)
+    private Date dateCancel;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_STATE", nullable = true)
@@ -34,11 +40,13 @@ public class PersonPosition {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonPosition that = (PersonPosition) o;
-        return id == that.id && Objects.equals(dateAddPosition, that.dateAddPosition);
+        return id == that.id && Objects.equals(dateAddPosition, that.dateAddPosition)
+                && Objects.equals(dateRemovePosition, that.dateRemovePosition)
+                && Objects.equals(dateCancel, that.dateCancel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateAddPosition);
+        return Objects.hash(id, dateAddPosition, dateRemovePosition, dateCancel);
     }
 }

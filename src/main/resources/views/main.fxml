@@ -27,6 +27,7 @@
                   <MenuItem fx:id="menuItemPosts" mnemonicParsing="false" onAction="#viewPosts" text="Боевые посты" />
                   <MenuItem fx:id="menuItemStatePost" mnemonicParsing="false" onAction="#viewStatePost" text="Боевой расчет" />
                   <MenuItem fx:id="menuItemPosition" mnemonicParsing="false" onAction="#viewPosition" text="Должности" />
+                  <MenuItem fx:id="menuItemDopusk" mnemonicParsing="false" onAction="#viewDopusk" text="Допуски" />
                   <MenuItem fx:id="menuItemPersonal" mnemonicParsing="false" onAction="#viewPersonal" text="Персонал" />
             </items>
           </Menu>

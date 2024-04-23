@@ -78,6 +78,10 @@ public class MainController implements Initializable {
         createScene("positions.fxml", "Должности", false);
     }
     @FXML
+    void viewDopusk() {
+        createScene("input-dopusk.fxml", "Допуски", true);
+    }
+    @FXML
     void viewPersonal() {
         personal("Персонал");
     }
@@ -101,7 +105,7 @@ public class MainController implements Initializable {
         menuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                createScene(xml, title, false);
+                createScene(xml, title, true);
             }
         });
         menu.getItems().add(menuItem);
