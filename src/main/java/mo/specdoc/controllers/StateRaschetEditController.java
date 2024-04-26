@@ -13,14 +13,13 @@ import java.util.ResourceBundle;
 
 public class StateRaschetEditController implements Initializable {
     private StateController positionController;
-    private State currentState;
-    private long id;
+    private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfieldSortValue;
 
-    public StateRaschetEditController(State state, long id) {
+    public StateRaschetEditController(State state, State stateParent) {
         this.currentState = state;
-        this.id = id;
+        this.stateParent = stateParent;
     }
 
     public void setParent (StateController controller){
@@ -35,7 +34,7 @@ public class StateRaschetEditController implements Initializable {
             currentState.setTitleStateDp(tfieldTitleDP.getText());
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
-            currentState.setParentIdState(id);
+            currentState.setStateParent(stateParent);
             currentState.setTypeState(5);
             StateModel.saveOrUpdate(currentState);
             positionController.refresh();

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.tableview2.FilteredTableView?>
 
 <!--
   ~ Copyright (c) 2022
   -->
 
-<AnchorPane fx:id="anchor" prefHeight="320.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.DopuskController">
+<AnchorPane fx:id="anchor" prefHeight="457.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.DopuskController">
    <children>
-      <CheckComboBox fx:id="checkComboBoxStructure" layoutX="7.0" layoutY="21.0" prefHeight="25.0" prefWidth="685.0" />
-      <FilteredTableView fx:id="tblPersonal" layoutX="8.0" layoutY="65.0" prefHeight="400.0" prefWidth="685.0" />
+      <TreeTableView fx:id="tblStructure" layoutX="20.0" layoutY="69.0" prefHeight="361.0" prefWidth="229.0">
+        <columns>
+          <TreeTableColumn fx:id="titleSubdiv" prefWidth="184.0" text="Подразделение" />
+        </columns>
+      </TreeTableView>
+      <FilteredTableView fx:id="tablePersonal" layoutX="264.0" layoutY="69.0" prefHeight="355.0" prefWidth="431.0" />
    </children>
 </AnchorPane>

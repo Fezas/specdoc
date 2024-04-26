@@ -16,15 +16,14 @@ import java.util.ResourceBundle;
 
 public class StatePositionEditController implements Initializable {
     private StateController positionController;
-    private State currentState;
-    private long id;
+    private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus, tfieldSortValue;
     @FXML    private ComboBox<Rank> cmbBoxRank;
 
-    public StatePositionEditController(State state, long id) {
+    public StatePositionEditController(State state, State stateParent) {
         this.currentState = state;
-        this.id = id;
+        this.stateParent = stateParent;
     }
 
     public void setParent (StateController controller){
@@ -40,7 +39,7 @@ public class StatePositionEditController implements Initializable {
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setPositionVus(tfVus.getText());
             currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
-            currentState.setParentIdState(id);
+            currentState.setStateParent(stateParent);
             currentState.setTypeState(4);
             StateModel.saveOrUpdate(currentState);
             positionController.refresh();

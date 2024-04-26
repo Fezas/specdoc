@@ -58,7 +58,7 @@ public class InputWorkController implements Initializable {
 
 
     private void createTabs(State root, TabPane tabPane) {
-        List<State> data = StateModel.getChildrenPosition(root.getIdState());
+        List<State> data = StateModel.getChildrenPosition(root);
         if (!data.isEmpty()) {
             for (State state : data) {
                 int id = state.getTypeState();

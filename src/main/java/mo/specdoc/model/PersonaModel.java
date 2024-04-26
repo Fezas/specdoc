@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2022-2023. Stepantsov P.V.
  */
 
 package mo.specdoc.model;
@@ -9,7 +9,6 @@ import mo.specdoc.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
 import java.util.ArrayList;
 import java.util.List;
 

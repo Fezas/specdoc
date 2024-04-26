@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2022-2023. Stepantsov P.V.
  */
 
 package mo.specdoc.controllers;

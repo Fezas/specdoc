@@ -10,15 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import mo.specdoc.dto.PersonaDTO;
-import mo.specdoc.dto.StateDTO;
 import mo.specdoc.entity.PersonPosition;
-import mo.specdoc.entity.Persona;
 import mo.specdoc.entity.State;
 import mo.specdoc.entity.dopusk.Dopusk;
 import mo.specdoc.model.DopuskModel;
 import mo.specdoc.model.PersonPositionModel;
 import mo.specdoc.model.StateModel;
-import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.tableview2.FilteredTableView;
 
 import java.net.URL;
@@ -28,9 +25,13 @@ import java.util.ResourceBundle;
 
 public class DopuskController implements Initializable {
     @FXML
-    private CheckComboBox<State> checkComboBoxStructure;
+    private FilteredTableView<PersonaDTO> tablePersonal;
+
     @FXML
-    private FilteredTableView<PersonaDTO> tblPersonal;
+    private TreeTableView<State> tblStructure;
+
+    @FXML
+    private TreeTableColumn<State, String> titleSubdiv;
 
 
     public DopuskController() {
@@ -58,27 +59,19 @@ public class DopuskController implements Initializable {
         name.setPrefWidth(110);
         lastname.setCellValueFactory(p -> p.getValue().getLastnameStringProperty());
         lastname.setPrefWidth(110);
-        tblPersonal.getColumns().setAll(family, name, lastname);
-        tblPersonal.setItems(personaDTOS);
-        return tblPersonal;
+        tablePersonal.getColumns().setAll(family, name, lastname);
+        tablePersonal.setItems(personaDTOS);
+        return tablePersonal;
     }
 
     public void structure(State root) {
-        StringBuilder prefix = new StringBuilder();
-        List<State> data = StateModel.getChildrenPosition(root.getIdState()); //дочерние узлы
+        List<State> data = StateModel.getChildrenPosition(root); //дочерние узлы
         if (!data.isEmpty()) {
-            prefix.append(" ");
             for (State state : data) {
-                state.setTitleState(prefix + state.getTitleState());
-                //StateDTO stateDTO = new StateDTO();
-                //stateDTO.setTitle(state.getTitleState());
-                //stateDTO.setState(state);
-                //stateDTO.setSort(String.valueOf(state.getSortValue()));
                 int id = state.getTypeState();
                 if (id == 1 | id == 2 | id == 3) {
-                    checkComboBoxStructure.getItems().add(state);
+                    
                 }
-                structure(state);
             }
         }
     }
@@ -94,7 +87,7 @@ public class DopuskController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        structure(StateModel.getRootState());
+        structure(StateModel.getFromTypeState(1).get(0));
         createTable(loadPersonal());
     }
 }

@@ -13,14 +13,13 @@ import java.util.ResourceBundle;
 
 public class StateSubdivEditController implements Initializable {
     private StateController positionController;
-    private State currentState;
-    private long id;
+    private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfieldSortValue;
 
-    public StateSubdivEditController(State state, long id) {
+    public StateSubdivEditController(State state, State stateParent) {
         this.currentState = state;
-        this.id = id;
+        this.stateParent = stateParent;
     }
 
     public void setParent (StateController controller){
@@ -35,7 +34,7 @@ public class StateSubdivEditController implements Initializable {
             currentState.setTitleStateDp(tfieldTitleDP.getText());
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
-            currentState.setParentIdState(id);
+            currentState.setStateParent(stateParent);
             currentState.setTypeState(3);
             StateModel.saveOrUpdate(currentState);
             positionController.refresh();

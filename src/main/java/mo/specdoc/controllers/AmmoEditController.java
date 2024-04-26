@@ -1,6 +1,5 @@
 package mo.specdoc.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -64,8 +63,8 @@ public class AmmoEditController implements Initializable {
     }
 
     @FXML
-    private void save(ActionEvent event) {
-        if (tfieldNumbWeapon.getText() == "") {
+    private void save() {
+        if ("".equals(tfieldNumbWeapon.getText())) {
             alert ("Не введен номер");
         } else if (cmbBoxWeaponType.getSelectionModel().getSelectedItem() == null) {
             alert ("Не выбран тип оружия");

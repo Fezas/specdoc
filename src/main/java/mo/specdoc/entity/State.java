@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2024
+ * Copyright (c) 2022-2023. Stepantsov P.V.
  */
 
 package mo.specdoc.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.Data;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -24,8 +25,8 @@ public class State {
     @Column(name = "TYPE_STATE", nullable = false)
     private int typeState;
     @Basic
-    @Column(name = "PARENT_ID_STATE", nullable = true)
-    private Long parentIdState;
+    @Column(name = "MAT_PATH", nullable = true)
+    private String matPath;
     @Basic
     @Column(name = "TITLE_STATE", nullable = false, length = -1)
     private String titleState;
@@ -75,17 +76,40 @@ public class State {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<PersonPosition> personPositions;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PARENT_ID_STATE", nullable = true)
+    private State stateParent;
+    
+    @OneToMany(mappedBy="stateParent")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<State> childState = new ArrayList<>();
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return idState == state.idState && typeState == state.typeState && postArmed == state.postArmed && postIsAmplification == state.postIsAmplification && sortValue == state.sortValue && Objects.equals(parentIdState, state.parentIdState) && Objects.equals(titleState, state.titleState) && Objects.equals(titleStateShort, state.titleStateShort) && Objects.equals(titleStateRp, state.titleStateRp) && Objects.equals(titleStateDp, state.titleStateDp) && Objects.equals(titleStatePp, state.titleStatePp) && Objects.equals(postNumb, state.postNumb) && Objects.equals(positionVus, state.positionVus) && Objects.equals(subdivisionAddress, state.subdivisionAddress) && Objects.equals(subdivisionCondNumber, state.subdivisionCondNumber);
+        return idState == state.idState && typeState == state.typeState && postArmed == state.postArmed 
+                && postIsAmplification == state.postIsAmplification 
+                && sortValue == state.sortValue 
+                && Objects.equals(matPath, state.matPath)
+                && Objects.equals(titleState, state.titleState) 
+                && Objects.equals(titleStateShort, state.titleStateShort) 
+                && Objects.equals(titleStateRp, state.titleStateRp) 
+                && Objects.equals(titleStateDp, state.titleStateDp) 
+                && Objects.equals(titleStatePp, state.titleStatePp) 
+                && Objects.equals(postNumb, state.postNumb) 
+                && Objects.equals(positionVus, state.positionVus) 
+                && Objects.equals(subdivisionAddress, state.subdivisionAddress) 
+                && Objects.equals(subdivisionCondNumber, state.subdivisionCondNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idState, typeState, parentIdState, titleState, titleStateShort, titleStateRp, titleStateDp, titleStatePp, postArmed, postNumb, postIsAmplification, positionVus, subdivisionAddress, subdivisionCondNumber, sortValue);
+        return Objects.hash(idState, typeState, matPath, titleState, 
+                titleStateShort, titleStateRp, titleStateDp, titleStatePp, postArmed, 
+                postNumb, postIsAmplification, positionVus, subdivisionAddress, 
+                subdivisionCondNumber, sortValue);
     }
 
     @Override

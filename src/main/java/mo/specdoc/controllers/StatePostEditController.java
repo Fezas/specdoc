@@ -19,17 +19,16 @@ import java.util.ResourceBundle;
 
 public class StatePostEditController implements Initializable {
     private StateController positionController;
-    private State currentState;
-    private long id;
+    private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitlePP, tfieldTitleShort,
             tfieldPostNumb, tfieldSortValue;
     @FXML    private ToggleSwitch tglSwitchArmed, tglSwitchAmplif;
     @FXML    private ComboBox<SecrecyType> cmbBoxSecrecyType;
 
-    public StatePostEditController(State state, long id) {
+    public StatePostEditController(State state, State stateParent) {
         this.currentState = state;
-        this.id = id;
+        this.stateParent = stateParent;
     }
 
     public void setParent (StateController controller){
@@ -46,7 +45,7 @@ public class StatePostEditController implements Initializable {
         currentState.setSecrecyType(cmbBoxSecrecyType.getSelectionModel().getSelectedItem());
         currentState.setPostIsAmplification(tglSwitchAmplif.isSelected());
         currentState.setPostArmed(tglSwitchArmed.isSelected());
-        currentState.setParentIdState(id);
+        currentState.setStateParent(stateParent);
         currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
         currentState.setTypeState(6);
         StateModel.saveOrUpdate(currentState);

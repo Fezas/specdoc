@@ -13,15 +13,14 @@ import java.util.ResourceBundle;
 
 public class StateRootEditController implements Initializable {
     private StateController positionController;
-    private State currentState;
-    private long id;
+    private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus,
             tfAddress, tfieldSortValue;
 
-    public StateRootEditController(State state, long id) {
+    public StateRootEditController(State state, State stateParent) {
         this.currentState = state;
-        this.id = id;
+        this.stateParent = stateParent;
     }
 
     public void setParent (StateController controller){
@@ -35,7 +34,7 @@ public class StateRootEditController implements Initializable {
             currentState.setTitleStateRp(tfieldTitleRP.getText());
             currentState.setTitleStateDp(tfieldTitleDP.getText());
             currentState.setTitleStateShort(tfieldTitleShort.getText());
-            currentState.setParentIdState(id);
+            currentState.setStateParent(stateParent);
             currentState.setSubdivisionAddress(tfAddress.getText());
             currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
             currentState.setTypeState(2);

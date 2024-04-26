@@ -78,12 +78,35 @@ public class StateModel {
         return sortedListState(result);
     }
 
-    public static List<State> getChildrenPosition(long id) {
+    //public static List<State> getChildrenPosition(long id) {
+    //    Transaction transaction = null;
+    //    List<State> result = new ArrayList<>();
+    //    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+    //        transaction = session.beginTransaction();
+    //        Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.stateParent.idState =: id", State.class);
+    //        query.setParameter("id", id);
+    //        result = query.getResultList();
+    //        transaction.commit();
+    //    } catch (Exception e) {
+    //        if (transaction != null) {
+    //            transaction.rollback();
+    //        }
+    //        e.printStackTrace();
+    //    }
+    //    return sortedListState(result);
+    //}
+
+    public static List<State> getChildrenPosition(State state) {
+        long id = state.getIdState();
         Transaction transaction = null;
         List<State> result = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.parentIdState =: id", State.class);
+            //SELECT a, DENSE_RANK() OVER (ORDER by length(a.matPath) - length(replace(a.matPath,'-',''))) FROM State a WHERE a.matPath like '%' || :id || '-%'
+            Query<State> query = session.createQuery("""
+                                                     SELECT a 
+                                                     FROM State a 
+                                                     WHERE a.matPath like '%' || :id || '-%'""", State.class);
             query.setParameter("id", id);
             result = query.getResultList();
             transaction.commit();
@@ -95,11 +118,11 @@ public class StateModel {
         }
         return sortedListState(result);
     }
-
+    
     public static List<State> getAllChildrenStructure(State state) {
         List<State> result = new ArrayList<>();
         State root = getById(state.getIdState());
-        List<State> childrens = getChildrenPosition(root.getIdState());
+        List<State> childrens = getChildrenPosition(root);
         if (!childrens.isEmpty()) {
             for (State s : childrens) {
                 result.add(s);
