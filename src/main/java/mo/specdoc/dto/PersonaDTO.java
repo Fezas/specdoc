@@ -27,9 +27,10 @@ public class PersonaDTO {
     private StringProperty familyStringProperty;
     private StringProperty nameStringProperty;
     private StringProperty lastnameStringProperty;
+    private StringProperty info;
     private ObjectProperty<HBox> control = new SimpleObjectProperty<>();
     private ObjectProperty<Date> birthdayObjectProperty = new SimpleObjectProperty<>();
-    private CheckBox check = new CheckBox();
+    private ObjectProperty<CheckBox> check =  new SimpleObjectProperty<>();
 
     public PersonaDTO() {
     }
@@ -46,7 +47,8 @@ public class PersonaDTO {
         this.ammoStringProperty = new SimpleStringProperty(initAmmo(persona));
         this.stateStringProperty = new SimpleStringProperty(initState(persona));
         this.dopuskStringProperty = new SimpleStringProperty(initPosts(persona));
-        this.check = new CheckBox();
+        this.info = new SimpleStringProperty(persona.getInfo());
+        this.check = new SimpleObjectProperty(new CheckBox());
     }
 
     private String initPosts(Persona persona) {

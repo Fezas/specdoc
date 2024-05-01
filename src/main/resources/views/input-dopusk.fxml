@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,11 +12,12 @@
 
 <AnchorPane fx:id="anchor" prefHeight="457.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.DopuskController">
    <children>
-      <TreeTableView fx:id="tblStructure" layoutX="20.0" layoutY="69.0" prefHeight="361.0" prefWidth="229.0">
+      <TreeTableView fx:id="tblStructure" layoutX="20.0" layoutY="26.0" prefHeight="404.0" prefWidth="186.0">
         <columns>
           <TreeTableColumn fx:id="titleSubdiv" prefWidth="184.0" text="Подразделение" />
         </columns>
       </TreeTableView>
-      <FilteredTableView fx:id="tablePersonal" layoutX="264.0" layoutY="69.0" prefHeight="355.0" prefWidth="431.0" />
+      <FilteredTableView fx:id="tablePersonal" layoutX="213.0" layoutY="228.0" prefHeight="196.0" prefWidth="482.0" />
+      <TabPane fx:id="tabPaneStructureState" layoutX="213.0" layoutY="28.0" prefHeight="196.0" prefWidth="482.0" tabClosingPolicy="UNAVAILABLE" />
    </children>
 </AnchorPane>

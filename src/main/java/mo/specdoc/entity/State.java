@@ -12,6 +12,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.List;
 import java.util.Objects;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.layout.HBox;
 
 @Entity
 @Data
@@ -64,6 +67,7 @@ public class State {
     @Column(name = "SORT_VALUE", nullable = false)
     private int sortValue;
 
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "POSITION_RANK_DEFAULT", nullable = true)
     private Rank rank;

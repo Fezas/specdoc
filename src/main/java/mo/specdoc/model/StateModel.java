@@ -77,26 +77,27 @@ public class StateModel {
         }
         return sortedListState(result);
     }
-
-    //public static List<State> getChildrenPosition(long id) {
-    //    Transaction transaction = null;
-    //    List<State> result = new ArrayList<>();
-    //    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-    //        transaction = session.beginTransaction();
-    //        Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.stateParent.idState =: id", State.class);
-    //        query.setParameter("id", id);
-    //        result = query.getResultList();
-    //        transaction.commit();
-    //    } catch (Exception e) {
-    //        if (transaction != null) {
-    //            transaction.rollback();
-    //        }
-    //        e.printStackTrace();
-    //    }
-    //    return sortedListState(result);
-    //}
-
+    
     public static List<State> getChildrenPosition(State state) {
+        Long id = state.getIdState();
+        Transaction transaction = null;
+        List<State> result = new ArrayList<>();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.stateParent.idState =: id", State.class);
+            query.setParameter("id", id);
+            result = query.getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return sortedListState(result);
+    }
+
+    public static List<State> getChildrenPositionAllLevel(State state) {
         long id = state.getIdState();
         Transaction transaction = null;
         List<State> result = new ArrayList<>();
@@ -119,25 +120,26 @@ public class StateModel {
         return sortedListState(result);
     }
     
-    public static List<State> getAllChildrenStructure(State state) {
-        List<State> result = new ArrayList<>();
-        State root = getById(state.getIdState());
-        List<State> childrens = getChildrenPosition(root);
-        if (!childrens.isEmpty()) {
-            for (State s : childrens) {
-                result.add(s);
-                getAllChildrenStructure(s);
-            }
-        }
-        return sortedListState(result);
-    }
+    //public static List<State> getAllChildrenStructure(State state) {
+    //    List<State> result = new ArrayList<>();
+    //    State root = getById(state.getIdState());
+    //    List<State> childrens = getChildrenPosition(root);
+    //    if (!childrens.isEmpty()) {
+    //        for (State s : childrens) {
+    //            result.add(s);
+    //            getAllChildrenStructure(s);
+    //        }
+    //    }
+    //    return sortedListState(result);
+    //}
 
+    //неверно работает?
     public static State getRootState() {
         Transaction transaction = null;
         State result = new State();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.parentIdState = null", State.class);
+            Query<State> query = session.createQuery("SELECT a FROM State a WHERE a.stateParent is null", State.class);
             result = query.getSingleResult();
             transaction.commit();
         } catch (Exception e) {

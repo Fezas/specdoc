@@ -34,7 +34,6 @@ import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
 import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 import org.kordamp.ikonli.javafx.FontIcon;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -108,7 +107,7 @@ public class InputWorkController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnCreateDocDayWork.setGraphic(new FontIcon("ri-docs-com:18"));
-        createTabs(StateModel.getRootState(), tabPaneSubdivions);
+        createTabs(StateModel.getFromTypeState(1).get(0), tabPaneSubdivions);
     }
 
 

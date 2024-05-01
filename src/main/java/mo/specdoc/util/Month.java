@@ -6,11 +6,9 @@ package mo.specdoc.util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Month {
     private String monthName;
     private int monthNumber;

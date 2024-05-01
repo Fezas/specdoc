@@ -13,22 +13,14 @@ import mo.specdoc.model.StateModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import mo.specdoc.util.FXMLControllerManager;
 
 public class StatePositionEditController implements Initializable {
-    private StateController positionController;
     private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitleDP, tfieldTitleShort, tfVus, tfieldSortValue;
     @FXML    private ComboBox<Rank> cmbBoxRank;
 
-    public StatePositionEditController(State state, State stateParent) {
-        this.currentState = state;
-        this.stateParent = stateParent;
-    }
-
-    public void setParent (StateController controller){
-        this.positionController = controller;
-    }
 
     @FXML
     public void saveAction() {
@@ -39,10 +31,10 @@ public class StatePositionEditController implements Initializable {
             currentState.setTitleStateShort(tfieldTitleShort.getText());
             currentState.setPositionVus(tfVus.getText());
             currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
-            currentState.setStateParent(stateParent);
+            currentState.setStateParent(FXMLControllerManager.getInstance().getStateController().getCurrentParentState());
             currentState.setTypeState(4);
             StateModel.saveOrUpdate(currentState);
-            positionController.refresh();
+            FXMLControllerManager.getInstance().getStateController().refresh();
             Stage stage = (Stage) btnSave.getScene().getWindow();
             stage.close();
         } catch (Exception e) {
@@ -59,6 +51,7 @@ public class StatePositionEditController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            currentState = FXMLControllerManager.getInstance().getStateController().getCurrentState();
             cmbBoxRank.getItems().addAll(RankModel.getAllRecords());
             if (currentState.getIdState() != 0L) {
                 tfieldTitle.setText(currentState.getTitleState());

@@ -7,8 +7,6 @@ package mo.specdoc.entity;
 import jakarta.persistence.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import lombok.Data;
@@ -87,7 +85,8 @@ public class Persona {
     @Transient
     private final ObjectProperty<Date> birthdayObjectProperty = new SimpleObjectProperty<>();
     @Transient
-    private CheckBox check = new CheckBox();
+    private String info;
+
 
 
     @Override

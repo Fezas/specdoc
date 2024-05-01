@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckTreeView?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mo.specdoc.controllers.SelectPersonalController">
+   <children>
+      <FilteredTableView fx:id="tablePersonal" layoutX="233.0" layoutY="115.0" prefHeight="325.0" prefWidth="511.0" />
+      <CheckTreeView fx:id="checkTreeView" layoutX="14.0" layoutY="42.0" prefHeight="400.0" prefWidth="207.0" />
+      <Label fx:id="lblPost" layoutX="233.0" layoutY="14.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

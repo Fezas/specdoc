@@ -107,7 +107,7 @@ public class PersonsViewController implements Initializable {
                 persons.addAll(PersonaModel.getAll());
                 break;
             case ("allPersonsWithEnableSecrecyType") :
-                State state = FXMLControllerManager.getInstance().getPositionController().getCurrentState();
+                State state = FXMLControllerManager.getInstance().getStateController().getCurrentState();
                 SecrecyType secrecyType = state.getSecrecyType();
                 for (Persona persona : PersonaModel.getAll()) {
                     SecrecyPerson lastSecrecyPerson = SecrecyPersonModel.getLastSecrecyByIdPerson(persona.getId());

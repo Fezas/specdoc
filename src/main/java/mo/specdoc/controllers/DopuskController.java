@@ -24,15 +24,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class DopuskController implements Initializable {
-    @FXML
-    private FilteredTableView<PersonaDTO> tablePersonal;
-
-    @FXML
-    private TreeTableView<State> tblStructure;
-
-    @FXML
-    private TreeTableColumn<State, String> titleSubdiv;
-
+    @FXML    private FilteredTableView<PersonaDTO> tablePersonal;
+    @FXML    private TreeTableView<State> tblStructure;
+    @FXML    private TreeTableColumn<State, String> titleSubdiv;
+    @FXML    private TabPane tabPaneStructureState;
+    private List<State> data = new ArrayList<>();
 
     public DopuskController() {
     }
@@ -46,6 +42,26 @@ public class DopuskController implements Initializable {
         return personaDTOS;
     }
     
+    private void createTabs(State root, TabPane tabPane) {
+        List<State> data = StateModel.getChildrenPosition(root);
+        if (!data.isEmpty()) {
+            for (State state : data) {
+                int id = state.getTypeState();
+                if (id == 1 | id == 2 | id == 3 | id == 5 | id == 6 | id == 7) {
+                    Tab tabState = new Tab(state.getTitleStateShort());
+                    tabPane.getTabs().add(tabState);
+                    TabPane childTabPane = new TabPane();
+                    if (id == 6) {
+                        List<PersonaDTO> list = createListPersona(state);
+                        if (!list.isEmpty()) {
+                            tabState.setContent(createTable(list));
+                        }
+                    } else tabState.setContent(childTabPane);
+                    createTabs(state, childTabPane);
+                }
+            }
+        }
+    }
     
     private TableView<PersonaDTO> createTable(List<PersonaDTO> list) {
         ObservableList<PersonaDTO> personaDTOS = FXCollections.observableArrayList();
@@ -65,7 +81,10 @@ public class DopuskController implements Initializable {
     }
 
     public void structure(State root) {
-        List<State> data = StateModel.getChildrenPosition(root); //дочерние узлы
+        //List<State> data = StateModel.getChildrenPosition(root); //дочерние узлы
+        for(State state : data) {
+            
+        }
         if (!data.isEmpty()) {
             for (State state : data) {
                 int id = state.getTypeState();
@@ -87,7 +106,9 @@ public class DopuskController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        structure(StateModel.getFromTypeState(1).get(0));
+        createTabs(StateModel.getFromTypeState(1).get(0), tabPaneStructureState);
+        data.addAll(StateModel.getChildrenPositionAllLevel(StateModel.getFromTypeState(1).get(0)));
+        //structure();
         createTable(loadPersonal());
     }
 }

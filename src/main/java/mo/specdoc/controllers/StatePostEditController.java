@@ -16,9 +16,9 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import mo.specdoc.util.FXMLControllerManager;
 
 public class StatePostEditController implements Initializable {
-    private StateController positionController;
     private State currentState, stateParent;
     @FXML    private Button btnSave, btnCancel;
     @FXML    private TextField tfieldTitle, tfieldTitleRP, tfieldTitlePP, tfieldTitleShort,
@@ -26,14 +26,6 @@ public class StatePostEditController implements Initializable {
     @FXML    private ToggleSwitch tglSwitchArmed, tglSwitchAmplif;
     @FXML    private ComboBox<SecrecyType> cmbBoxSecrecyType;
 
-    public StatePostEditController(State state, State stateParent) {
-        this.currentState = state;
-        this.stateParent = stateParent;
-    }
-
-    public void setParent (StateController controller){
-        this.positionController = controller;
-    }
 
     @FXML
     public void saveAction(ActionEvent event) {
@@ -45,11 +37,11 @@ public class StatePostEditController implements Initializable {
         currentState.setSecrecyType(cmbBoxSecrecyType.getSelectionModel().getSelectedItem());
         currentState.setPostIsAmplification(tglSwitchAmplif.isSelected());
         currentState.setPostArmed(tglSwitchArmed.isSelected());
-        currentState.setStateParent(stateParent);
+        currentState.setStateParent(FXMLControllerManager.getInstance().getStateController().getCurrentParentState());
         currentState.setSortValue(Integer.parseInt(tfieldSortValue.getText()));
         currentState.setTypeState(6);
         StateModel.saveOrUpdate(currentState);
-        positionController.refresh();
+        FXMLControllerManager.getInstance().getStateController().refresh();
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();
     }
@@ -70,6 +62,7 @@ public class StatePostEditController implements Initializable {
         validador.validate(tfieldPostNumb, 15, true, false, true, true);
         validador.validate(tfieldSortValue, 6, false, false, true, false);
         try {
+            currentState = FXMLControllerManager.getInstance().getStateController().getCurrentState();
             cmbBoxSecrecyType.getItems().addAll(SecrecyTypeModel.getAllRecords());
             if (currentState.getIdState() != 0L) { //режим редактирования
                 tfieldTitle.setText(currentState.getTitleState());

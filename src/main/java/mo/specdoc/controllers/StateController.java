@@ -33,12 +33,13 @@ public class StateController implements Initializable {
     @FXML    private TreeTableView<StateDTO> tblStructure;
     private StateDTO node;
     private Persona currentPersona = new Persona();
-    private State currentState;
+    public State currentState;
+    public State currentParentState;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        FXMLControllerManager.getInstance().setPositionController(this);
+        FXMLControllerManager.getInstance().setStateController(this);
         //привязка столбцов таблицы к свойствам объекта
         clmnTitleStructure.setCellValueFactory(new TreeItemPropertyValueFactory<StateDTO, String>("title"));
         clmnButtons.setCellValueFactory(new TreeItemPropertyValueFactory<StateDTO, String>("boxBtn"));
@@ -169,12 +170,12 @@ public class StateController implements Initializable {
     }
 
     /**
-     * Функция рекурсивного формирования {@link TreeTableView} с помощью запроса  {@link StateModel#getChildrenPosition(long)}
+     * Функция рекурсивного формирования {@link TreeTableView} с помощью запроса  {@link State#getChildState()}
      * @param itemRoot
      */
     
     public void structure(TreeItem<StateDTO> itemRoot) {
-        List<State> data = itemRoot.getValue().getState().getChildState(); //дочерние узлы
+        List<State> data = StateModel.getChildrenPosition(itemRoot.getValue().getState()); //itemRoot.getValue().getState().getChildState(); //дочерние узлы
         if (!data.isEmpty()) {
             for (State state : data) {
                 TreeItem<StateDTO> item = createNode(state);
@@ -191,9 +192,9 @@ public class StateController implements Initializable {
         tooltip.setText("Добавить отдельное подразделение в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            editRootSubdivision("Отдельное подразделение", 
-                    new State(), 
-                    stateDTO.getState());
+            currentParentState = stateDTO.getState();
+            currentState = new State();
+            editRootSubdivision("Отдельное подразделение");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -205,9 +206,9 @@ public class StateController implements Initializable {
         tooltip.setText("Добавить линейное подразделение в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            editSubdivision("Линейное подразделение",
-                    new State(),
-                    stateDTO.getState());
+            currentParentState = stateDTO.getState();
+            currentState = new State();
+            editSubdivision("Линейное подразделение");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -219,9 +220,9 @@ public class StateController implements Initializable {
         tooltip.setText("Добавить должность в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            editPosition("Должность", 
-                    new State(), 
-                    stateDTO.getState());
+            currentParentState = stateDTO.getState();
+            currentState = new State();
+            editPosition("Должность");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -233,9 +234,9 @@ public class StateController implements Initializable {
         tooltip.setText("Добавить расчет в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            editRaschet("Боевой расчет", 
-                    new State(), 
-                    stateDTO.getState());
+            currentParentState = stateDTO.getState();
+            currentState = new State();
+            editRaschet("Боевой расчет");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -247,9 +248,9 @@ public class StateController implements Initializable {
         tooltip.setText("Добавить пост в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            editPost("Боевой пост", 
-                    new State(), 
-                    stateDTO.getState());
+            currentParentState = stateDTO.getState();
+            currentState = new State();
+            editPost("Боевой пост");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -263,33 +264,33 @@ public class StateController implements Initializable {
         switch (stateDTO.getState().getTypeState()) {
             case 2 -> //отдельное подразделение
                 button.setOnAction((ActionEvent e) -> {
-                    editRootSubdivision("Редактирование новой записи",
-                            stateDTO.getState(),
-                            stateDTO.getState());
+                    currentParentState = stateDTO.getState();
+                    currentState = stateDTO.getState();
+                    editRootSubdivision("Редактирование записи");
         });
             case 3 -> //линейное подразделение
                 button.setOnAction((ActionEvent e) -> {
-                    editSubdivision("Редактирование новой записи",
-                            stateDTO.getState(),
-                            stateDTO.getState());
+                    currentParentState = stateDTO.getState();
+                    currentState = stateDTO.getState();
+                    editSubdivision("Редактирование записи");
         });
             case 4 -> //должность
                 button.setOnAction((ActionEvent e) -> {
-                    editPosition("Должность",
-                            stateDTO.getState(),
-                            stateDTO.getState());
+                    currentParentState = stateDTO.getState();
+                    currentState = stateDTO.getState();
+                    editPosition("Должность");
         });
             case 5 -> //боевой расчет
                 button.setOnAction((ActionEvent e) -> {
-                    editRaschet("Боевой расчет",
-                            stateDTO.getState(),
-                            stateDTO.getState());
+                    currentParentState = stateDTO.getState();
+                    currentState = stateDTO.getState();
+                    editRaschet("Боевой расчет");
         });
             case 6 -> //боевой пост
                 button.setOnAction((ActionEvent e) -> {
-                    editPost("Боевой пост",
-                            stateDTO.getState(),
-                            stateDTO.getState());
+                    currentParentState = stateDTO.getState();
+                    currentState = stateDTO.getState();
+                    editPost("Боевой пост");
         });
         }
         stateDTO.getBoxBtn().getChildren().add(button);
@@ -320,18 +321,16 @@ public class StateController implements Initializable {
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
-
     
     private void createButtonAddPersonaFromPost(StateDTO stateDTO) {
         Button button = new Button();
         button.setGraphic(new FontIcon("anto-subnode"));
         Tooltip tooltip = new Tooltip();
-        //tooltip.setText("Добавить персонал в \n\"" + state.getPosition().getTitle() + "\"\n");
+        tooltip.setText("Добавить допуск персонала в \n\"" + stateDTO.getState().getTitleState() + "\"\n");
         button.setTooltip(tooltip);
         button.setOnAction((ActionEvent e) -> {
-            currentPersona = new Persona();
             currentState = stateDTO.getState();
-            addPersona("Назначение на пост", "allPersonsWithEnableSecrecyType");
+            filterPersonal("Назначение на пост");
         });
         stateDTO.getBoxBtn().getChildren().add(button);
     }
@@ -348,15 +347,11 @@ public class StateController implements Initializable {
         state.getBoxBtn().getChildren().add(button);
     }
 
-    public void editRootSubdivision(String title, State state, State stateParent) {
+    public void editRootSubdivision(String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/state-root.fxml"));
-            StateRootEditController controller = new StateRootEditController(state, stateParent);
-            fxmlLoader.setController(controller);
             Stage stage = new Stage();
             stage.setTitle(title);
-            StateRootEditController c = fxmlLoader.getController();
-            c.setParent(this);
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -367,15 +362,11 @@ public class StateController implements Initializable {
         }
     }
 
-    public void editSubdivision(String title, State state, State stateParent) {
+    public void editSubdivision(String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/state-subdiv.fxml"));
-            StateSubdivEditController controller = new StateSubdivEditController(state, stateParent);
-            fxmlLoader.setController(controller);
             Stage stage = new Stage();
             stage.setTitle(title);
-            StateSubdivEditController c = fxmlLoader.getController();
-            c.setParent(this);
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -386,15 +377,11 @@ public class StateController implements Initializable {
         }
     }
 
-    public void editPosition(String title, State state, State stateParent) {
+    public void editPosition(String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/state-position.fxml"));
-            StatePositionEditController controller = new StatePositionEditController(state, stateParent);
-            fxmlLoader.setController(controller);
             Stage stage = new Stage();
             stage.setTitle(title);
-            StatePositionEditController c = fxmlLoader.getController();
-            c.setParent(this);
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -405,15 +392,11 @@ public class StateController implements Initializable {
         }
     }
 
-    public void editRaschet(String title, State state, State stateParent) {
+    public void editRaschet(String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/state-raschet.fxml"));
-            StateRaschetEditController controller = new StateRaschetEditController(state, stateParent);
-            fxmlLoader.setController(controller);
             Stage stage = new Stage();
             stage.setTitle(title);
-            StateRaschetEditController c = fxmlLoader.getController();
-            c.setParent(this);
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -424,15 +407,11 @@ public class StateController implements Initializable {
         }
     }
 
-    public void editPost(String title, State state, State stateParent) {
+    public void editPost(String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/state-post.fxml"));
-            StatePostEditController controller = new StatePostEditController(state, stateParent);
-            fxmlLoader.setController(controller);
             Stage stage = new Stage();
             stage.setTitle(title);
-            StatePostEditController c = fxmlLoader.getController();
-            c.setParent(this);
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -460,6 +439,22 @@ public class StateController implements Initializable {
         }
     }
 
+    private void filterPersonal(String title) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/personal-select.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(title);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
     private void showAlertDeletePositionWithHeaderText(String title, StateDTO node) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Удаление записи");

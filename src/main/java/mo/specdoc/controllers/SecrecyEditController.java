@@ -124,13 +124,10 @@ public class SecrecyEditController implements Initializable{
                     MenuItem editItem = new MenuItem("Редактировать");
                     MenuItem removeItem = new MenuItem("Удалить пункт");
 
-                    editItem.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            cmbBoxSecrecyPersona.getSelectionModel().select(row.getItem().getSecrecyType());
-                            datePickerAchievSecrecyWork.setValue(row.getItem().getDateAddSecrecy().toLocalDate());
-                            secrecyPerson.setId(row.getItem().getId());
-                        }
+                    editItem.setOnAction((ActionEvent event) -> {
+                        cmbBoxSecrecyPersona.getSelectionModel().select(row.getItem().getSecrecyType());
+                        datePickerAchievSecrecyWork.setValue(row.getItem().getDateAddSecrecy().toLocalDate());
+                        secrecyPerson.setId(row.getItem().getId());
                     });
                     removeItem.setOnAction(event -> {
                         Alert alertDelete = new Alert(Alert.AlertType.CONFIRMATION);

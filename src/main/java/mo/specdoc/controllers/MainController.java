@@ -65,10 +65,12 @@ public class MainController implements Initializable {
     void viewSubdivisions() {
         createScene("structure-position-table.fxml", "Штат", true);
     }
+    
     @FXML
     void viewPosts() {
         createScene("-structure-post-table.fxml", "Посты", false);
     }
+    
     @FXML
     void viewStatePost() {
         createScene("-posts.fxml", "Боевой расчет", false);
@@ -102,11 +104,8 @@ public class MainController implements Initializable {
      */
     private void startSimleMenu(Menu menu, String xml, String title) {
         MenuItem menuItem = new MenuItem("firthItem");
-        menuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                createScene(xml, title, true);
-            }
+        menuItem.setOnAction((ActionEvent event) -> {
+            createScene(xml, title, true);
         });
         menu.getItems().add(menuItem);
         menu.showingProperty().addListener(

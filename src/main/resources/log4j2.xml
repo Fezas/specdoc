@@ -3,7 +3,7 @@
   ~ Copyright (c) 2022. Stepantsov P.V.
   -->
 
-<Configuration status="all" strict="true"
+<Configuration status="error" strict="true"
                name="XMLConfigTest" packages="org.apache.logging.log4j.test">
     <Filter type="ThresholdFilter" level="trace" />
     <Appenders>
@@ -25,7 +25,7 @@
     </Appenders>
 
     <Loggers>
-        <Root level="all">
+        <Root level="error">
             <AppenderRef ref="STDOUT" />
             <AppenderRef ref="rollingSystem" />
         </Root>

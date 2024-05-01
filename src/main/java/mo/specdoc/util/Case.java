@@ -41,53 +41,53 @@ public class Case {
         endingLastname = lastname.substring(lastname.length() - 2);
         baseLastname = lastname.substring(0, lastname.length() - 2);
         if (gender) { //мужчины
-            switch (endingFam) {
-                case ("ий") : endingFamRP = "ого"; break;
-                case ("ов") : endingFamRP = "ова"; break;
-                case ("ев") : endingFamRP = "ева"; break;
-                case ("ин") : endingFamRP = "ина"; break;
-                default: endingFamRP = endingFam; // не склоняем
-            }
-            switch (endingName) {
-                case ("ел") : endingNameRP = "ла"; break;
-                case ("др") : endingNameRP = "дра"; break;
-                case ("ей") : endingNameRP = "ея"; break;
-                case ("тр") : endingNameRP = "тра"; break;
-                case ("ег") : endingNameRP = "ега"; break;
-                case ("ан") : endingNameRP = "ана"; break;
-                case ("ль") : endingNameRP = "ля"; break;
-                case ("ир") : endingNameRP = "ира"; break;
-                case ("ий") : endingNameRP = "ия"; break;
-                case ("ор") : endingNameRP = "ора"; break;
-                case ("рь") : endingNameRP = "ря"; break;
-                default: endingNameRP = endingName; // не склоняем
-            }
-            switch (endingLastname) {
-                case ("ич") : endingLastnameRP = "ича"; break;
-                default: endingLastnameRP = endingLastname; // не склоняем
-            }
+            endingFamRP = switch (endingFam) {
+                case ("ий") -> "ого";
+                case ("ов") -> "ова";
+                case ("ев") -> "ева";
+                case ("ин") -> "ина";
+                default -> endingFam;
+            }; // не склоняем
+            endingNameRP = switch (endingName) {
+                case ("ел") -> "ла";
+                case ("др") -> "дра";
+                case ("ей") -> "ея";
+                case ("тр") -> "тра";
+                case ("ег") -> "ега";
+                case ("ан") -> "ана";
+                case ("ль") -> "ля";
+                case ("ир") -> "ира";
+                case ("ий") -> "ия";
+                case ("ор") -> "ора";
+                case ("рь") -> "ря";
+                default -> endingName;
+            }; // не склоняем
+            endingLastnameRP = switch (endingLastname) {
+                case ("ич") -> "ича";
+                default -> endingLastname;
+            }; // не склоняем
         } else { //женщины
-            switch (endingFam) {
-                case ("ая") : endingFamRP = "ую"; break;
-                case ("ва") : endingFamRP = "ву"; break;
-                case ("на") : endingFamRP = "ну"; break;
-                default: endingFamRP = endingFam; // не склоняем
-            }
-            switch (endingName) {
-                case ("га") : endingNameRP = "гу"; break;
-                case ("ия") : endingNameRP = "ию"; break;
-                case ("на") : endingNameRP = "ну"; break;
-                case ("та") : endingNameRP = "ту"; break;
-                case ("да") : endingNameRP = "ду"; break;
-                case ("ея") : endingNameRP = "ею"; break;
-                case ("ль") : endingNameRP = "лю"; break;
-                case ("ья") : endingNameRP = "ью"; break;
-                default: endingNameRP = endingName; // не склоняем
-            }
-            switch (endingLastname) {
-                case ("на") : endingLastnameRP = "ину"; break;
-                default: endingLastnameRP = endingLastname; // не склоняем
-            }
+            endingFamRP = switch (endingFam) {
+                case ("ая") -> "ую";
+                case ("ва") -> "ву";
+                case ("на") -> "ну";
+                default -> endingFam;
+            }; // не склоняем
+            endingNameRP = switch (endingName) {
+                case ("га") -> "гу";
+                case ("ия") -> "ию";
+                case ("на") -> "ну";
+                case ("та") -> "ту";
+                case ("да") -> "ду";
+                case ("ея") -> "ею";
+                case ("ль") -> "лю";
+                case ("ья") -> "ью";
+                default -> endingName;
+            }; // не склоняем
+            endingLastnameRP = switch (endingLastname) {
+                case ("на") -> "ину";
+                default -> endingLastname;
+            }; // не склоняем
         }
         String[] result = {
                 baseFamily + endingFamRP,
@@ -119,53 +119,53 @@ public class Case {
         endingLastname = lastname.substring(lastname.length() - 2);
         baseLastname = lastname.substring(0, lastname.length() - 2);
         if (gender) { //мужчины
-            switch (endingFam) {
-                case ("ий") : endingFamDP = "ому"; break;
-                case ("ов") : endingFamDP = "ову"; break;
-                case ("ев") : endingFamDP = "еву"; break;
-                case ("ин") : endingFamDP = "ину"; break;
-                default: endingFamDP = endingFam; // не склоняем
-            }
-            switch (endingName) {
-                case ("ел") : endingNameDP = "лу"; break;
-                case ("др") : endingNameDP = "дру"; break;
-                case ("ей") : endingNameDP = "ею"; break;
-                case ("тр") : endingNameDP = "тру"; break;
-                case ("ег") : endingNameDP = "егу"; break;
-                case ("ан") : endingNameDP = "ану"; break;
-                case ("ль") : endingNameDP = "лю"; break;
-                case ("ир") : endingNameDP = "иру"; break;
-                case ("ий") : endingNameDP = "ию"; break;
-                case ("ор") : endingNameDP = "ору"; break;
-                case ("рь") : endingNameDP = "рю"; break;
-                default: endingNameDP = endingName; // не склоняем
-            }
-            switch (endingLastname) {
-                case ("ич") : endingLastnameDP = "ичу"; break;
-                default: endingLastnameDP = endingLastname; // не склоняем
-            }
+            endingFamDP = switch (endingFam) {
+                case ("ий") -> "ому";
+                case ("ов") -> "ову";
+                case ("ев") -> "еву";
+                case ("ин") -> "ину";
+                default -> endingFam;
+            }; // не склоняем
+            endingNameDP = switch (endingName) {
+                case ("ел") -> "лу";
+                case ("др") -> "дру";
+                case ("ей") -> "ею";
+                case ("тр") -> "тру";
+                case ("ег") -> "егу";
+                case ("ан") -> "ану";
+                case ("ль") -> "лю";
+                case ("ир") -> "иру";
+                case ("ий") -> "ию";
+                case ("ор") -> "ору";
+                case ("рь") -> "рю";
+                default -> endingName;
+            }; // не склоняем
+            endingLastnameDP = switch (endingLastname) {
+                case ("ич") -> "ичу";
+                default -> endingLastname;
+            }; // не склоняем
         } else { //женщины
-            switch (endingFam) {
-                case ("ая") : endingFamDP = "ай"; break;
-                case ("ва") : endingFamDP = "вой"; break;
-                case ("на") : endingFamDP = "ной"; break;
-                default: endingFamDP = endingFam; // не склоняем
-            }
-            switch (endingName) {
-                case ("га") : endingNameDP = "ге"; break;
-                case ("ия") : endingNameDP = "ии"; break;
-                case ("на") : endingNameDP = "не"; break;
-                case ("та") : endingNameDP = "ту"; break;
-                case ("да") : endingNameDP = "де"; break;
-                case ("ея") : endingNameDP = "ее"; break;
-                case ("ль") : endingNameDP = "ле"; break;
-                case ("ья") : endingNameDP = "ье"; break;
-                default: endingNameDP = endingName; // не склоняем
-            }
-            switch (endingLastname) {
-                case ("на") : endingLastnameDP = "ине"; break;
-                default: endingLastnameDP = endingLastname; // не склоняем
-            }
+            endingFamDP = switch (endingFam) {
+                case ("ая") -> "ай";
+                case ("ва") -> "вой";
+                case ("на") -> "ной";
+                default -> endingFam;
+            }; // не склоняем
+            endingNameDP = switch (endingName) {
+                case ("га") -> "ге";
+                case ("ия") -> "ии";
+                case ("на") -> "не";
+                case ("та") -> "ту";
+                case ("да") -> "де";
+                case ("ея") -> "ее";
+                case ("ль") -> "ле";
+                case ("ья") -> "ье";
+                default -> endingName;
+            }; // не склоняем
+            endingLastnameDP = switch (endingLastname) {
+                case ("на") -> "ине";
+                default -> endingLastname;
+            }; // не склоняем
         }
         String[] result = {
                 baseFamily + endingFamDP,

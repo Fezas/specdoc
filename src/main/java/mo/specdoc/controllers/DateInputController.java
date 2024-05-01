@@ -33,13 +33,13 @@ public class DateInputController {
         btnSave.setGraphic(new FontIcon("anto-save"));
         btnCancel.setGraphic(new FontIcon("anto-close"));
         PersonPosition personPosition = new PersonPosition();
-        State state = FXMLControllerManager.getInstance().getPositionController().getCurrentState();
+        State state = FXMLControllerManager.getInstance().getStateController().getCurrentState();
         Persona persona = FXMLControllerManager.getInstance().getPersonsViewController().getCurrentPersona().getPersona();
         personPosition.setState(state);
         personPosition.setPersonaFromPosition(persona);
         personPosition.setDateAddPosition(java.sql.Date.valueOf(dp.getValue()));
         PersonPositionModel.saveOrUpdate(personPosition);
-        FXMLControllerManager.getInstance().getPositionController().refresh();
+        FXMLControllerManager.getInstance().getStateController().refresh();
         FXMLControllerManager.getInstance().getPersonsViewController().cancel();
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
